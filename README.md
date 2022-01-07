@@ -8,3 +8,4 @@
  3. Add icons and images
  4. Improve suggestion feature
  5. Implement sorting based on distance
+ 6. Improve dark mode UI
