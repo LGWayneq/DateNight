@@ -8,7 +8,7 @@
     <fragment
         android:id="@+id/categoryFragment"
         android:name="com.example.datenightv3.activities.CategoryFragment"
-        android:label="Categories"
+        android:label="Date Night"
         tools:layout="@layout/category_fragment" >
         <action
             android:id="@+id/action_categoryFragment_to_addCategoryFragment"
