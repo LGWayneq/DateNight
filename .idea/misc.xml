@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/G Wayne/AppData/Local/Android/Sdk/platforms/android-31/data/res/layout/simple_list_item_1.xml" value="0.34782608695652173" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/activity_main.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/add_category_fragment.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/add_idea_fragment.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/category_fragment.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/category_item.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/fragment_blank.xml" value="0.20520833333333333" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/idea_choice_fragment.xml" value="0.2158113730929265" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/idea_details_fragment.xml" value="0.35733695652173914" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/idea_item.xml" value="0.35733695652173914" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/ideas_fragment.xml" value="0.2957427536231884" />
+        <entry key="..\:/Users/G Wayne/Desktop/Website Project/DateNightv3/app/src/main/res/layout/suggestion_fragment.xml" value="0.3523550724637681" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>

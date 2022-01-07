@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/categoryFragment">
+
+    <fragment
+        android:id="@+id/categoryFragment"
+        android:name="com.example.datenightv3.activities.CategoryFragment"
+        android:label="Categories"
+        tools:layout="@layout/category_fragment" >
+        <action
+            android:id="@+id/action_categoryFragment_to_addCategoryFragment"
+            app:destination="@id/addCategoryFragment" />
+        <action
+            android:id="@+id/action_categoryFragment_to_ideaChoiceFragment"
+            app:destination="@id/ideaChoiceFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addCategoryFragment"
+        android:name="com.example.datenightv3.activities.AddCategoryFragment"
+        android:label="Add Category" >
+        <action
+            android:id="@+id/action_addCategoryFragment_to_categoryFragment"
+            app:destination="@id/categoryFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ideasFragment"
+        android:name="com.example.datenightv3.activities.IdeasFragment"
+        android:label="{categoryName}">
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_ideasFragment_to_ideaDetailsFragment"
+            app:destination="@id/ideaDetailsFragment" />
+        <action
+            android:id="@+id/action_ideasFragment_to_addIdeaFragment"
+            app:destination="@id/addIdeaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ideaDetailsFragment"
+        android:name="com.example.datenightv3.activities.IdeaDetailsFragment"
+        android:label="{categoryName}"
+        tools:layout="@layout/idea_details_fragment">
+        <argument
+            android:name="ideaId"
+            app:argType="integer"/>
+        <argument
+            android:name="categoryName"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_ideaDetailsFragment_to_addIdeaFragment"
+            app:destination="@id/addIdeaFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addIdeaFragment"
+        android:name="com.example.datenightv3.activities.AddIdeaFragment"
+        android:label="{titleString}" >
+        <argument
+            android:name="titleString"
+            app:argType="string"/>
+        <argument
+            android:name="ideaId"
+            android:defaultValue="-1"
+            app:argType="integer"/>
+        <argument
+            android:name="categoryName"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_addIdeaFragment_to_ideasFragment"
+            app:destination="@id/ideasFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/ideaChoiceFragment"
+        android:name="com.example.datenightv3.activities.IdeaChoiceFragment"
+        android:label="{categoryName}"
+        tools:layout="@layout/idea_choice_fragment" >
+        <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <argument
+            android:name="categoryName"
+            app:argType="string" />
+        <action
+            android:id="@+id/action_ideaChoiceFragment_to_ideasFragment"
+            app:destination="@id/ideasFragment" />
+        <action
+            android:id="@+id/action_ideaChoiceFragment_to_suggestionFragment"
+            app:destination="@id/suggestionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/suggestionFragment"
+        android:name="com.example.datenightv3.activities.SuggestionFragment"
+        android:label="{categoryName}"
+        tools:layout="@layout/suggestion_fragment" >
+            <argument
+            android:name="categoryName"
+            app:argType="string" />
+    </fragment>
+
+</navigation>

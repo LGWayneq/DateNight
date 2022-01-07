@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/margin"
+    tools:context=".activities.IdeaDetailsFragment">
+
+    <TextView
+        android:id="@+id/idea_name_label"
+        android:text="Name"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"/>
+    <TextView
+        android:id="@+id/idea_name"
+        style="@style/Widget.Inventory.TextView"
+        android:textSize="18dp"
+        android:layout_height="wrap_content"
+        android:layout_width="250dp"
+        android:layout_marginLeft="@dimen/margin"
+        app:layout_constraintStart_toEndOf="@id/idea_location_label"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:text="Idea Name" />
+
+    <TextView
+        android:id="@+id/idea_location_label"
+        android:text="Location"
+        android:textSize="20dp"
+        android:textColor="@color/black"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_idea_details"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idea_name_label"/>
+    <TextView
+        android:id="@+id/idea_location"
+        style="@style/Widget.Inventory.TextView"
+        android:textSize="18dp"
+        android:layout_width="wrap_content"
+        android:layout_marginLeft="@dimen/margin"
+        app:layout_constraintStart_toEndOf="@id/idea_location_label"
+        app:layout_constraintTop_toTopOf="@+id/idea_location_label"
+        app:layout_constraintBottom_toBottomOf="@id/idea_location_label"
+        tools:text="Location" />
+
+    <TextView
+        android:id="@+id/idea_description"
+        style="@style/Widget.Inventory.TextView"
+        android:textSize="18dp"
+        android:layout_width="wrap_content"
+        android:layout_marginTop="32dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idea_location"
+        tools:text="Description of Idea"/>
+
+    <Button
+        android:id="@+id/edit_idea"
+        android:layout_marginTop="32dp"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:contentDescription="@string/edit_idea"
+        android:text="@string/edit_idea"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idea_description"
+        app:tint="@android:color/white" />
+
+    <Button
+        android:id="@+id/delete_idea"
+        style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:text="@string/delete"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_idea" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>
+
+

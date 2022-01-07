@@ -1,0 +1,57 @@
+<!--
+     Copyright (C) 2021 The Android Open Source Project
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<resources>
+    <string name="app_name">Date Night</string>
+    <!-- Shown above left column listing bus stops in full schedule fragment -->
+    <string name="add_button">Add Button</string>
+    <string name="add_category_fragment_title">Add New Category</string>
+    <string name="category_name_req">Category Name *</string>
+    <string name="save_action">Save</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="delete">Delete</string>
+    <string name="edit_idea">Edit</string>
+    <string name="idea_name_req">Name</string>
+    <string name="idea_location_req">Location</string>
+    <string name="idea_description_req">Description</string>
+    <string name="delete_question">Are you sure you want to delete?</string>
+    <string name="no">No</string>
+    <string name="yes">Yes</string>
+    <string name="duplicate_category_message">Category already exists</string>
+    <string name="filter">Filter</string>
+    <string name="reroll">Reroll</string>
+    <string name="category_empty_warning">Category does not have any entries</string>
+
+    <string-array name="Locations">
+        <item>Java</item>
+        <item>Kotlin</item>
+        <item>Swift</item>
+        <item>Python</item>
+        <item>Scala</item>
+        <item>Perl</item>
+        <item>Javascript</item>
+        <item>Jquery</item>
+    </string-array>
+    <string name="title_activity_main2">MainActivity2</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+    <string name="idea_name_header">Name</string>
+    <string name="idea_distance_header">Distance</string>
+</resources>
