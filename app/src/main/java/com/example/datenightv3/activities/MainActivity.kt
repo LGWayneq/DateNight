@@ -22,10 +22,12 @@ import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.os.Handler
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupActionBarWithNavController
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.example.datenightv3.R
 import com.example.datenightv3.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient

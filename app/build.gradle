@@ -64,6 +64,8 @@ dependencies {
     implementation 'com.android.support.constraint:constraint-layout:2.0.4'
     implementation 'com.google.android.gms:play-services-location:19.0.0'
 
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation 'androidx.gridlayout:gridlayout:1.0.0'
 // optional - Kotlin Extensions and Coroutines support for Room
     implementation "androidx.room:room-ktx:$room_version"
 }

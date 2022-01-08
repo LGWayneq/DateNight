@@ -18,12 +18,14 @@ package com.example.datenightv3.activities
 import android.Manifest
 import android.content.pm.PackageManager
 import android.os.Bundle
+import android.os.Handler
 import android.os.Looper
+import android.os.SystemClock
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.SearchView
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -41,6 +43,7 @@ import com.google.android.gms.location.*
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
 
@@ -93,7 +96,7 @@ class IdeasFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = IdeasFragmentBinding.inflate(inflater, container, false)
-
+        setAutoRefresh()
         return binding.root
     }
 
@@ -101,7 +104,10 @@ class IdeasFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
         recyclerView = binding.recyclerView
         recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        ideaAdapter = IdeaAdapter {
+
+        getLocation()
+
+        ideaAdapter = IdeaAdapter(latitude, longitude) {
             val action = IdeasFragmentDirections
                 .actionIdeasFragmentToIdeaDetailsFragment(
                     categoryName = it.categoryName,
@@ -110,35 +116,28 @@ class IdeasFragment: Fragment() {
             view.findNavController().navigate(action)
         }
 
-
         if (navigationArgs.categoryName == "Food") binding.ideaDistance.visibility = View.VISIBLE
-        getLocation()
-        ideaAdapter.getCoordinates(latitude, longitude)
-        //Distance feature needs to be fixed. Current method takes up too much resources on main thread
 
         recyclerView.adapter = ideaAdapter
-        //getLocationDistances()
+
         bindView()
         setUpSearchBar()
+        initialiseRefreshListener(view)
+
     }
 
-    /*private fun getLocationDistances() {
-        lifecycle.coroutineScope.launch {
-            viewModel.getIdeaInCategory(navigationArgs.categoryName).onEach {
-                if (navigationArgs.categoryName == "Food") {
-                    for (idea in it) {
-                        var distance: Double ?= null
-                        val destLatitude = locationViewModel.getLocationLatitude(idea.ideaLocation)
-                        val destLongitude = locationViewModel.getLocationLongitude(idea.ideaLocation)
-                        distance = calcDistance(destLatitude, destLongitude, latitude, longitude)
-                        viewModel.getUpdatedIdea(idea, distance)
-                    }
-                }
-            }
+    private fun setAutoRefresh() {
+        val handler = Handler()
+
+        //val currentTime = SystemClock.currentThreadTimeMillis()
+        val refresh = Runnable {
+            onViewCreated(binding.root, null)
         }
-    }*/
+        handler.postDelayed(refresh, 300)
+            }
 
     private fun bindView() {
+        Log.d("MyActivity", "Binding view")
         lifecycle.coroutineScope.launch {
             viewModel.getIdeaInCategory(navigationArgs.categoryName).collect {
                 ideaAdapter.submitList(it)
@@ -203,6 +202,7 @@ class IdeasFragment: Fragment() {
                 this.longitude = location.longitude
             }
         //change to getcurrentlocation
+
     }
 
     private fun checkLocationPermission() {
@@ -218,25 +218,17 @@ class IdeasFragment: Fragment() {
         }
     }
 
-    private fun calcDistance(lat1: Double?, lon1: Double?, lat2: Double?, lon2: Double?): Double? {
-        var d : Double? = null
-        if (lon2 != null && lat2 != null && lat1 != null && lon1 != null) {
-            val R = 6371; // Radius of the earth in km
-            val dLat = deg2rad(lat2 - lat1);  // deg2rad below
-            val dLon = deg2rad(lon2 - lon1);
-            val a =
-                sin(dLat / 2) * sin(dLat / 2) +
-                        cos(deg2rad(lat1)) * cos(deg2rad(lat2)) *
-                        sin(dLon / 2) * sin(dLon / 2)
-            ;
-            val c = 2 * atan2(sqrt(a), sqrt(1 - a));
-            d = R * c; // Distance in km
+    private fun initialiseRefreshListener(view: View) {
+        val swipeRefreshLayout=binding.swipeLayout
+        swipeRefreshLayout.setOnRefreshListener { // This method gets called when user pull for refresh,
+            onViewCreated(view, null)
+            val handler = Handler()
+            handler.postDelayed(Runnable {
+                if (swipeRefreshLayout.isRefreshing()) {
+                    swipeRefreshLayout.setRefreshing(false)
+                }
+            }, 700)
         }
-        return d
-    }
-
-    private fun deg2rad(deg: Double): Double {
-        return deg * (Math.PI/180)
     }
 
     override fun onDestroyView() {

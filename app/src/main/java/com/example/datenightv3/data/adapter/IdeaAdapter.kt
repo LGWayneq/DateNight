@@ -1,5 +1,6 @@
 package com.example.datenightv3.data.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
@@ -16,11 +17,11 @@ import kotlin.math.cos
 import kotlin.math.sin
 import kotlin.math.sqrt
 
-class IdeaAdapter(private val onItemClicked: (Idea) -> Unit) : ListAdapter<Idea, IdeaAdapter.IdeaViewHolder>(
+class IdeaAdapter(private var latitude: Double?,
+                  private var longitude: Double?,
+                  private val onItemClicked: (Idea) -> Unit, ) : ListAdapter<Idea, IdeaAdapter.IdeaViewHolder>(
     DiffCallback
 ) {
-    private var latitude: Double? = null
-    private var longitude: Double? = null
 
     companion object {
         private val DiffCallback = object : DiffUtil.ItemCallback<Idea>() {
@@ -34,18 +35,19 @@ class IdeaAdapter(private val onItemClicked: (Idea) -> Unit) : ListAdapter<Idea,
         }
     }
 
-    class IdeaViewHolder(private var binding: IdeaItemBinding, private var latitude: Double?, private var longitude: Double?): RecyclerView.ViewHolder(binding.root) {
-        fun bind(idea: Idea) {
+    class IdeaViewHolder(private var binding: IdeaItemBinding): RecyclerView.ViewHolder(binding.root) {
+        fun bind(idea: Idea, latitude: Double?, longitude: Double?) {
             binding.ideaNameTextView.text = idea.ideaName
-
             if (idea.categoryName == "Food") {
-                val distance = calcDistance(idea.ideaLatitude, idea.ideaLongitude, this.latitude, this.longitude)
+                val ideaLatitude = idea.ideaLatitude
+                val ideaLongitude = idea.ideaLongitude
+                val distance: Double = calcDistance(ideaLatitude, ideaLongitude, latitude, longitude)
                 binding.ideaDistanceTextView.text = String.format("%.1f", distance) + "km"
             }
         }
 
-        private fun calcDistance(lat1: Double?, lon1: Double?, lat2: Double?, lon2: Double?): Double? {
-            var d : Double? = null
+        private fun calcDistance(lat1: Double?, lon1: Double?, lat2: Double?, lon2: Double?): Double {
+            var d : Double = 0.0
             if (lon2 != null && lat2 != null && lat1 != null && lon1 != null) {
                 val R = 6371; // Radius of the earth in km
                 val dLat = deg2rad(lat2 - lat1);  // deg2rad below
@@ -72,8 +74,6 @@ class IdeaAdapter(private val onItemClicked: (Idea) -> Unit) : ListAdapter<Idea,
                 LayoutInflater.from(parent.context),
                 parent, false
             ),
-            this.latitude,
-            this.longitude
         )
         viewHolder.itemView.setOnClickListener {
             val position = viewHolder.adapterPosition
@@ -83,11 +83,6 @@ class IdeaAdapter(private val onItemClicked: (Idea) -> Unit) : ListAdapter<Idea,
     }
 
     override fun onBindViewHolder(holder: IdeaViewHolder, position: Int) {
-        holder.bind(getItem(position))
-    }
-
-    fun getCoordinates(latitude: Double?, longitude: Double?){
-        this.latitude = latitude
-        this.longitude = longitude
+        holder.bind(getItem(position), this.latitude, this.longitude)
     }
 }
