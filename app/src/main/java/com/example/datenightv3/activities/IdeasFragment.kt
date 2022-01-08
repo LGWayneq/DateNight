@@ -39,12 +39,10 @@ import com.example.datenightv3.databinding.IdeasFragmentBinding
 import com.example.datenightv3.viewmodel.*
 import com.google.android.gms.location.*
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
-import kotlin.math.atan2
-import kotlin.math.cos
-import kotlin.math.sin
-import kotlin.math.sqrt
+import kotlin.math.*
 
 class IdeasFragment: Fragment() {
 
@@ -112,33 +110,37 @@ class IdeasFragment: Fragment() {
             view.findNavController().navigate(action)
         }
 
-        /*
+
         if (navigationArgs.categoryName == "Food") binding.ideaDistance.visibility = View.VISIBLE
         getLocation()
+        ideaAdapter.getCoordinates(latitude, longitude)
         //Distance feature needs to be fixed. Current method takes up too much resources on main thread
-        */
-
 
         recyclerView.adapter = ideaAdapter
+        //getLocationDistances()
         bindView()
         setUpSearchBar()
     }
 
+    /*private fun getLocationDistances() {
+        lifecycle.coroutineScope.launch {
+            viewModel.getIdeaInCategory(navigationArgs.categoryName).onEach {
+                if (navigationArgs.categoryName == "Food") {
+                    for (idea in it) {
+                        var distance: Double ?= null
+                        val destLatitude = locationViewModel.getLocationLatitude(idea.ideaLocation)
+                        val destLongitude = locationViewModel.getLocationLongitude(idea.ideaLocation)
+                        distance = calcDistance(destLatitude, destLongitude, latitude, longitude)
+                        viewModel.getUpdatedIdea(idea, distance)
+                    }
+                }
+            }
+        }
+    }*/
+
     private fun bindView() {
         lifecycle.coroutineScope.launch {
             viewModel.getIdeaInCategory(navigationArgs.categoryName).collect {
-                /*for (idea in it) {
-                    var distance: Double ?= null
-                    if (navigationArgs.categoryName == "Food") {
-                        val destLatitude = locationViewModel.getLocationLatitude(idea.ideaLocation)
-                        val destLongitude =
-                            locationViewModel.getLocationLongitude(idea.ideaLocation)
-                        distance =
-                            calcDistance(destLatitude, destLongitude, latitude, longitude)
-                    }
-                    distance = 1.0
-                    viewModel.getUpdatedIdea(idea, distance)
-                }*/
                 ideaAdapter.submitList(it)
             }
         }
@@ -217,7 +219,7 @@ class IdeasFragment: Fragment() {
     }
 
     private fun calcDistance(lat1: Double?, lon1: Double?, lat2: Double?, lon2: Double?): Double? {
-        var d : Double ?= null
+        var d : Double? = null
         if (lon2 != null && lat2 != null && lat1 != null && lon1 != null) {
             val R = 6371; // Radius of the earth in km
             val dLat = deg2rad(lat2 - lat1);  // deg2rad below

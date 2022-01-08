@@ -10,7 +10,13 @@ import kotlinx.coroutines.launch
 
 class LocationViewModel(private val locationDao: LocationDao): ViewModel() {
 
-    fun getAllLocationNames():List<String> = locationDao.getAllLocations()
+    fun getAllLocationNames():MutableLiveData<List<String>> {
+        val locationNamesList = MutableLiveData<List<String>>()
+        viewModelScope.launch {
+            locationNamesList.value = locationDao.getAllLocations()
+        }
+        return locationNamesList
+    }
 
     suspend fun getLocationLatitude(locationName: String?): Double? = locationDao.getLocationLatitude(locationName)
 

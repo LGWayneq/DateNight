@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.datenightv3.data.classes.Idea
 import com.example.datenightv3.data.dao.IdeaDao
 
-@Database(entities = [Idea::class], version = 12)
+@Database(entities = [Idea::class], version = 13)
 abstract class IdeaDatabase: RoomDatabase() {
     abstract fun ideaDao(): IdeaDao
 

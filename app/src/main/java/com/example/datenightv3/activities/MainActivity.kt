@@ -48,8 +48,6 @@ class MainActivity : AppCompatActivity() {
 
         getLocationPermission()
 
-        setActionBarColor()
-
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -75,9 +73,5 @@ class MainActivity : AppCompatActivity() {
         locationPermissionRequest.launch(arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION))
-    }
-
-    private fun setActionBarColor() {
-        supportActionBar!!.setBackgroundDrawable(ColorDrawable(Color.parseColor("#202020")))
     }
 }

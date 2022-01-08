@@ -12,6 +12,7 @@ data class Idea (
     @NonNull @ColumnInfo(name = "category_name") val categoryName: String,
     @ColumnInfo(name = "idea_location") val ideaLocation: String?,
     @ColumnInfo(name = "idea_description") val ideaDescription: String?,
-    @ColumnInfo(name = "idea_location_distance") val ideaLocationDistance: Double?,
+    @ColumnInfo(name = "idea_latitude") val ideaLatitude: Double?,
+    @ColumnInfo(name = "idea_longitude") val ideaLongitude: Double?,
 )
 

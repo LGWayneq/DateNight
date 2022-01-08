@@ -23,7 +23,6 @@ abstract class LocationDatabase: RoomDatabase() {
                     "Location_database")
                     .createFromAsset("database/locations.db")
                     .fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
 

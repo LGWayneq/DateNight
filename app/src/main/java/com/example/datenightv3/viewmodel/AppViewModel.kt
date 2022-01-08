@@ -53,12 +53,17 @@ class AppViewModel(private val categoryDao: CategoryDao, private val ideaDao: Id
         }
     }
 
-    private fun createNewIdeaEntry(ideaName: String, categoryName: String, ideaDescription: String?, ideaLocation: String?): Idea {
-        return Idea(ideaName = ideaName, categoryName = categoryName, ideaDescription = ideaDescription, ideaLocation = ideaLocation, ideaLocationDistance = null)
+    private fun createNewIdeaEntry(ideaName: String, categoryName: String, ideaDescription: String?, ideaLocation: String?, ideaLatitude: Double?, ideaLongitude: Double?): Idea {
+        return Idea(ideaName = ideaName,
+            categoryName = categoryName,
+            ideaDescription = ideaDescription,
+            ideaLocation = ideaLocation,
+            ideaLatitude = ideaLatitude,
+            ideaLongitude = ideaLongitude)
     }
 
-    fun addIdea(ideaName: String, categoryName: String, ideaDescription: String?, ideaLocation: String?) {
-        val newIdea = createNewIdeaEntry(ideaName, categoryName, ideaDescription, ideaLocation)
+    fun addIdea(ideaName: String, categoryName: String, ideaDescription: String?, ideaLocation: String?, ideaLatitude: Double?=null, ideaLongitude: Double?=null) {
+        val newIdea = createNewIdeaEntry(ideaName, categoryName, ideaDescription, ideaLocation, ideaLatitude, ideaLongitude)
         insertIdea(newIdea)
     }
 
@@ -78,15 +83,11 @@ class AppViewModel(private val categoryDao: CategoryDao, private val ideaDao: Id
         }
     }
 
-    fun getUpdatedIdea(ideaId: Int, ideaName: String, categoryName: String, ideaDescription: String?, ideaLocation: String?, ideaLocationDistance: Double?) {
-        val updatedIdea = Idea(ideaId, ideaName, categoryName, ideaLocation, ideaDescription, ideaLocationDistance)
+    fun getUpdatedIdea(ideaId: Int, ideaName: String, categoryName: String, ideaDescription: String?, ideaLocation: String?, ideaLatitude: Double?=null, ideaLongitude: Double?=null) {
+        val updatedIdea = Idea(ideaId, ideaName, categoryName, ideaLocation, ideaDescription, ideaLatitude, ideaLongitude)
         updateIdea(updatedIdea)
     }
 
-    fun getUpdatedIdea(idea: Idea, ideaLocationDistance: Double?) {
-        val updatedIdea = Idea(idea.id, idea.ideaName, idea.categoryName, idea.ideaLocation, idea.ideaDescription, ideaLocationDistance)
-        updateIdea(updatedIdea)
-    }
 
     fun generateSuggestion(categoryName: String): LiveData<Idea> {
         return ideaDao.getRandomIdeaInCategory(categoryName).asLiveData()

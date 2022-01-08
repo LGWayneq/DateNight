@@ -17,7 +17,7 @@ interface LocationDao {
     suspend fun delete(location: Location)
 
     @Query("SELECT location_name FROM locations ORDER BY location_name ASC")
-    fun getAllLocations(): List<String>
+    suspend fun getAllLocations(): List<String>
 
     @Query("SELECT location_latitude FROM locations where location_name = :location_name")
     suspend fun getLocationLatitude(location_name: String?): Double?

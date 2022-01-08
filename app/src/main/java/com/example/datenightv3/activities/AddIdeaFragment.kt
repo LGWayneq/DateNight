@@ -11,6 +11,7 @@ import android.widget.ArrayAdapter
 import android.widget.TextView
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.R
@@ -44,6 +45,7 @@ class AddIdeaFragment : Fragment() {
     }
 
     private lateinit var idea: Idea
+    lateinit var locations: List<String>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -62,6 +64,12 @@ class AddIdeaFragment : Fragment() {
             binding.ideaLocation.visibility = View.VISIBLE
             binding.ideaLocationLabel.visibility = View.VISIBLE
         }
+
+        locationViewModel.getAllLocationNames().observe(viewLifecycleOwner, Observer {
+            locations = it
+            bindAutoComplete()
+        })
+
         if (id > 0) {
             viewModel.getIdea(id).observe(this.viewLifecycleOwner) {
                 idea = it
@@ -70,11 +78,10 @@ class AddIdeaFragment : Fragment() {
         } else {
             binding.saveAction.setOnClickListener { addNewIdea() }
         }
-        bindAutoComplete()
+
     }
 
     private fun bindAutoComplete() {
-        val locations: List<String> = locationViewModel.getAllLocationNames()
         val adapter = ArrayAdapter(requireContext(), android.R.layout.simple_list_item_1,  locations)
         binding.ideaLocation.setAdapter(adapter)
     }
@@ -138,7 +145,7 @@ class AddIdeaFragment : Fragment() {
         if (navigationArgs.categoryName != "Food") return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
         return !(binding.ideaName.text.toString().isBlank() ||
                 binding.ideaLocation.text.toString().isBlank() ||
-                binding.ideaDescription.text.toString().isBlank()) && binding.ideaLocation.text.toString() in locationViewModel.getAllLocationNames()
+                binding.ideaDescription.text.toString().isBlank()) && binding.ideaLocation.text.toString() in locations
     }
 
     override fun onDestroyView() {
