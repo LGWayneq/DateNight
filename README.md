@@ -8,7 +8,7 @@
  3. Run the app
  
  TODOs:
- 1. <del>Implement</del> Optimise distance feature
+ 1. <del>Implement distance feature</del> (done)
  2. Improve UI
  3. Add icons and images
  4. Improve suggestion feature
