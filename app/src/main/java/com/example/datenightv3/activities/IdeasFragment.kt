@@ -20,7 +20,6 @@ import android.content.pm.PackageManager
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.os.SystemClock
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -35,18 +34,22 @@ import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.datenightv3.data.DataSorter
 import com.example.datenightv3.data.DatabaseApplication
 import com.example.datenightv3.data.adapter.IdeaAdapter
 import com.example.datenightv3.databinding.IdeasFragmentBinding
 import com.example.datenightv3.viewmodel.*
 import com.google.android.gms.location.*
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.*
 import java.util.concurrent.TimeUnit
 import kotlin.math.*
+import com.example.datenightv3.R
 
+enum class sortType {
+    NAME_ASCEND, NAME_DESCEND, DIST_ASCEND, DIST_DESCEND
+}
 class IdeasFragment: Fragment() {
 
     companion object {
@@ -54,16 +57,12 @@ class IdeasFragment: Fragment() {
     }
 
     private var _binding: IdeasFragmentBinding? = null
-
     private val binding get() = _binding!!
 
     private lateinit var recyclerView: RecyclerView
-
-    private lateinit var ideaName: String
-
     private lateinit var fusedLocationClient: FusedLocationProviderClient
-
     private val navigationArgs: IdeasFragmentArgs by navArgs()
+    private lateinit var ideaName: String
 
     private val viewModel: AppViewModel by activityViewModels {
         AppViewModelFactory(
@@ -81,6 +80,7 @@ class IdeasFragment: Fragment() {
 
     private var latitude: Double? = null
     private var longitude: Double? = null
+    private var currentSort: sortType = sortType.NAME_ASCEND
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -97,6 +97,7 @@ class IdeasFragment: Fragment() {
     ): View? {
         _binding = IdeasFragmentBinding.inflate(inflater, container, false)
         setAutoRefresh()
+
         return binding.root
     }
 
@@ -116,14 +117,12 @@ class IdeasFragment: Fragment() {
             view.findNavController().navigate(action)
         }
 
-        if (navigationArgs.categoryName == "Food") binding.ideaDistance.visibility = View.VISIBLE
-
+        if (navigationArgs.categoryName == "Food") binding.ideaDistanceLayout.visibility = View.VISIBLE
         recyclerView.adapter = ideaAdapter
-
+        currentSort = sortType.NAME_ASCEND
         bindView()
         setUpSearchBar()
         initialiseRefreshListener(view)
-
     }
 
     private fun setAutoRefresh() {
@@ -134,21 +133,63 @@ class IdeasFragment: Fragment() {
             onViewCreated(binding.root, null)
         }
         handler.postDelayed(refresh, 300)
-            }
+    }
 
     private fun bindView() {
-        Log.d("MyActivity", "Binding view")
-        lifecycle.coroutineScope.launch {
-            viewModel.getIdeaInCategory(navigationArgs.categoryName).collect {
-                ideaAdapter.submitList(it)
-            }
-        }
+        bindList()
         binding.addIdeaButton.setOnClickListener {
             val action = IdeasFragmentDirections.actionIdeasFragmentToAddIdeaFragment(
                 titleString = "Add New " + navigationArgs.categoryName + " Idea",
                 categoryName = navigationArgs.categoryName
             )
             this.findNavController().navigate(action)
+        }
+        binding.ideaNameLayout.setOnClickListener {
+            if (currentSort == sortType.NAME_ASCEND) {
+                currentSort = sortType.NAME_DESCEND
+                binding.ideaNameSortArrow.visibility = View.VISIBLE
+                binding.ideaNameSortArrow.setImageResource(R.drawable.ic_arrow_up)
+                binding.ideaDistanceSortArrow.visibility = View.INVISIBLE
+            }
+            else {
+                currentSort = sortType.NAME_ASCEND
+                binding.ideaNameSortArrow.visibility = View.VISIBLE
+                binding.ideaNameSortArrow.setImageResource(R.drawable.ic_arrow_down)
+                binding.ideaDistanceSortArrow.visibility = View.INVISIBLE
+            }
+            bindList()
+        }
+        binding.ideaDistanceLayout.setOnClickListener {
+            binding.ideaDistanceLayout
+            if (currentSort == sortType.DIST_ASCEND) {
+                currentSort = sortType.DIST_DESCEND
+                ideaAdapter.submitList(ideaAdapter.currentList.reversed())
+                binding.ideaDistanceSortArrow.visibility = View.VISIBLE
+                binding.ideaDistanceSortArrow.setImageResource(R.drawable.ic_arrow_up)
+                binding.ideaNameSortArrow.visibility = View.INVISIBLE
+            } else {
+                currentSort = sortType.DIST_ASCEND
+                binding.ideaDistanceSortArrow.visibility = View.VISIBLE
+                binding.ideaDistanceSortArrow.setImageResource(R.drawable.ic_arrow_down)
+                binding.ideaNameSortArrow.visibility = View.INVISIBLE
+            }
+            bindList()
+        }
+    }
+
+    private fun bindList() {
+        ideaAdapter.submitList(null)
+        lifecycle.coroutineScope.launch {
+            viewModel.getIdeaInCategory(navigationArgs.categoryName).collect {
+                ideaAdapter.submitList(it)
+                val dataSorter = DataSorter(it.toMutableList(),
+                    ideaAdapter.distanceList,
+                    viewModel.getIdeasCount(navigationArgs.categoryName))
+                if (currentSort == sortType.NAME_ASCEND) ideaAdapter.submitList(it)
+                else if (currentSort == sortType.NAME_DESCEND) ideaAdapter.submitList(it.reversed())
+                else if (currentSort == sortType.DIST_ASCEND) { ideaAdapter.submitList(dataSorter.sortDistance()) }
+                else if (currentSort == sortType.DIST_DESCEND){ ideaAdapter.submitList(dataSorter.sortDistance().reversed()) }
+            }
         }
     }
 
@@ -197,12 +238,11 @@ class IdeasFragment: Fragment() {
             Looper.getMainLooper())
 
         fusedLocationClient.lastLocation
+            .addOnFailureListener {  }
             .addOnSuccessListener { location ->
                 this.latitude = location.latitude
                 this.longitude = location.longitude
             }
-        //change to getcurrentlocation
-
     }
 
     private fun checkLocationPermission() {

@@ -35,53 +35,83 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/idea_name"
-            style="@style/Widget.Inventory.Header"
-            android:layout_marginStart="@dimen/margin_between_elements"
-            android:text="@string/idea_name_header"
-            android:layout_width="230dp"
-            android:layout_marginTop="16dp"
-            app:layout_constraintEnd_toStartOf="@+id/idea_distance"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/idea_search_view" />
-
+    <LinearLayout
+        android:id="@+id/idea_name_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_between_elements"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idea_search_view">
+            <TextView
+                android:id="@+id/idea_name"
+                style="@style/Widget.Inventory.Header"
+                android:layout_marginStart="@dimen/margin"
+                android:text="@string/idea_name_header"
+                android:layout_width="wrap_content"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toStartOf="@+id/idea_name_layout"
+                app:layout_constraintTop_toTopOf="@+id/idea_name_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/idea_name_layout"/>
+            <ImageView
+                android:id="@+id/idea_name_sort_arrow"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:src="@drawable/ic_arrow_down"
+                app:layout_constraintStart_toEndOf="@id/idea_name"
+                app:layout_constraintTop_toTopOf="@+id/idea_name_layout"
+                app:layout_constraintBottom_toBottomOf="@+id/idea_name_layout"/>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/idea_distance_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_between_elements"
+        android:layout_marginEnd="@dimen/margin_between_elements"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/idea_search_view">
         <TextView
             android:id="@+id/idea_distance"
             style="@style/Widget.Inventory.Header"
-            android:layout_marginTop="16dp"
-            android:layout_marginStart="@dimen/margin_between_elements"
+            android:layout_marginStart="@dimen/margin"
             android:text="@string/idea_distance_header"
-            android:layout_width="120dp"
+            android:layout_width="wrap_content"
             android:textAlignment="center"
-            android:visibility="invisible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toEndOf="@id/idea_name"
-            app:layout_constraintTop_toBottomOf="@id/idea_search_view" />
-
+            app:layout_constraintStart_toStartOf="@+id/idea_distance_layout"
+            app:layout_constraintTop_toTopOf="@+id/idea_distance_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/idea_distance_layout" />
+        <ImageView
+            android:id="@+id/idea_distance_sort_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="5dp"
+            android:src="@drawable/ic_arrow_down"
+            android:visibility="invisible"
+            app:layout_constraintTop_toTopOf="@+id/idea_distance_layout"
+            app:layout_constraintBottom_toBottomOf="@+id/idea_distance_layout"/>
+    </LinearLayout>
         <View
             android:id="@+id/divider"
             style="@style/Divider"
-            android:layout_marginTop="32dp"
-            android:layout_marginBottom="16dp"
+            android:layout_marginTop="@dimen/margin"
             app:layout_constraintBottom_toTopOf="@+id/recycler_view"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/idea_distance" />
+            app:layout_constraintTop_toBottomOf="@+id/idea_name_layout" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recycler_view"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="@dimen/margin"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/idea_name" />
+            app:layout_constraintTop_toBottomOf="@id/idea_name_layout" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/add_idea_button"

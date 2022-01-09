@@ -94,6 +94,8 @@ class AppViewModel(private val categoryDao: CategoryDao, private val ideaDao: Id
     }
 
     fun queryIdea(query: String?, categoryName: String) = ideaDao.searchIdea("%" + query + "%", category_name = categoryName)
+
+    fun getIdeasCount(categoryName: String): Int = ideaDao.getIdeasCount(categoryName)
 }
 
 class AppViewModelFactory(

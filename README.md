@@ -12,5 +12,5 @@
  2. Improve UI
  3. Add icons and images
  4. Improve suggestion feature
- 5. Implement sorting based on distance
+ 5. <del>Implement sorting based on distance</del> (done)
  6. Improve dark mode UI

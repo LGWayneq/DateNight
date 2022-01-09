@@ -35,4 +35,7 @@ interface IdeaDao {
 
     @Query("SELECT * FROM ideas WHERE idea_name LIKE :query AND category_name = :category_name ORDER BY idea_name ASC")
     fun searchIdea(query: String?, category_name: String): Flow<List<Idea>>
+
+    @Query("SELECT COUNT(*) FROM ideas WHERE category_name = :category_name")
+    fun getIdeasCount(category_name: String): Int
 }
