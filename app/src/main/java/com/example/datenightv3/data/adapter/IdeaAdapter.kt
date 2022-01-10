@@ -1,13 +1,16 @@
 package com.example.datenightv3.data.adapter
 
+import android.app.ActionBar
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.core.view.size
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.datenightv3.R
 import com.example.datenightv3.data.DatabaseApplication
 import com.example.datenightv3.data.classes.Idea
 import com.example.datenightv3.databinding.IdeaItemBinding
@@ -47,6 +50,9 @@ class IdeaAdapter(private var latitude: Double?,
                 val ideaLongitude = idea.ideaLongitude
                 distance = calcDistance(ideaLatitude, ideaLongitude, latitude, longitude)
                 binding.ideaDistanceTextView.text = String.format("%.1f", distance) + "km"
+            } else {
+                binding.ideaNameTextView.setLayoutParams(LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT))
             }
         }
 

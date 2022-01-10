@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:paddingLeft="@dimen/margin_between_elements"
+    android:paddingLeft="@dimen/margin"
     android:paddingRight="@dimen/margin_between_elements"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
@@ -16,7 +16,6 @@
         style="@style/Widget.Inventory.ListItemTextView"
         android:layout_width="250dp"
         android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/margin_between_elements"
         android:layout_marginBottom="@dimen/margin_idea_details"
         android:fontFamily="sans-serif-medium"
         android:textSize="20dp"
