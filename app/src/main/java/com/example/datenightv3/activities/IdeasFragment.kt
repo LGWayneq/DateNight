@@ -109,16 +109,17 @@ class IdeasFragment: Fragment() {
 
         getLocation()
 
-        ideaAdapter = IdeaAdapter(latitude, longitude) {
+        ideaAdapter = IdeaAdapter(latitude, longitude, navigationArgs.requireLocation) {
             val action = IdeasFragmentDirections
                 .actionIdeasFragmentToIdeaDetailsFragment(
                     categoryName = it.categoryName,
-                    ideaId = it.id
+                    ideaId = it.id,
+                    requireLocation = navigationArgs.requireLocation
                 )
             view.findNavController().navigate(action)
         }
 
-        if (navigationArgs.categoryName == "Food") binding.ideaDistanceLayout.visibility = View.VISIBLE
+        if (navigationArgs.requireLocation) binding.ideaDistanceLayout.visibility = View.VISIBLE
         recyclerView.adapter = ideaAdapter
         currentSort = sortType.NAME_ASCEND
         bindView()
@@ -144,7 +145,8 @@ class IdeasFragment: Fragment() {
         binding.addIdeaButton.setOnClickListener {
             val action = IdeasFragmentDirections.actionIdeasFragmentToAddIdeaFragment(
                 titleString = "Add New " + navigationArgs.categoryName + " Idea",
-                categoryName = navigationArgs.categoryName
+                categoryName = navigationArgs.categoryName,
+                requireLocation = navigationArgs.requireLocation
             )
             this.findNavController().navigate(action)
         }

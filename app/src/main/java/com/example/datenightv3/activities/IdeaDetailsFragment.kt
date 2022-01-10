@@ -77,7 +77,8 @@ class IdeaDetailsFragment : Fragment() {
                 val action = IdeaDetailsFragmentDirections.actionIdeaDetailsFragmentToAddIdeaFragment(
                     titleString = "Edit " + idea.ideaName,
                     ideaId = idea.id,
-                    categoryName = idea.categoryName
+                    categoryName = idea.categoryName,
+                    requireLocation = navigationArgs.requireLocation
                 )
                 findNavController().navigate(action)
             }

@@ -41,15 +41,42 @@
             app:layout_constraintTop_toBottomOf="@id/category_name_label"
             app:layout_constraintStart_toStartOf="parent" />
 
+        <LinearLayout
+            android:id="@+id/location_checkbox_layout"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/margin_between_elements"
+            app:layout_constraintTop_toBottomOf="@id/duplicate_category_message"
+            app:layout_constraintStart_toStartOf="parent">
+            <CheckBox
+                android:id="@+id/location_checkbox"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_elements"
+                app:layout_constraintTop_toBottomOf="@id/duplicate_category_message"
+                app:layout_constraintStart_toStartOf="parent"/>
+            <TextView
+                android:id="@+id/location_checkbox_label"
+                android:text="@string/location_question"
+                android:textSize="@dimen/margin"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/margin_between_elements"
+                app:layout_constraintTop_toBottomOf="@id/duplicate_category_message"
+                app:layout_constraintBottom_toBottomOf="@id/location_checkbox"
+                app:layout_constraintStart_toEndOf="@id/location_checkbox"/>
+        </LinearLayout>
+
+
         <Button
             android:id="@+id/save_action"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
+            android:layout_marginTop="@dimen/margin_between_elements"
             android:text="@string/save_action"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/duplicate_category_message" />
+            app:layout_constraintTop_toBottomOf="@+id/location_checkbox_layout" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>

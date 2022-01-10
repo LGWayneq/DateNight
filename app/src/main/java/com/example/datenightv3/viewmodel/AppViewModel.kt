@@ -20,12 +20,12 @@ class AppViewModel(private val categoryDao: CategoryDao, private val ideaDao: Id
         }
     }
 
-    private fun createNewCategoryEntry(categoryName: String): Category {
-        return Category(categoryName = categoryName)
+    private fun createNewCategoryEntry(categoryName: String, requireLocation: Int): Category {
+        return Category(categoryName = categoryName, requireLocation = requireLocation)
     }
 
-    fun addCategory(categoryName: String) {
-        val newCategory = createNewCategoryEntry(categoryName)
+    fun addCategory(categoryName: String, requireLocation: Int) {
+        val newCategory = createNewCategoryEntry(categoryName, requireLocation)
         insertCategory(newCategory)
     }
 
@@ -37,6 +37,12 @@ class AppViewModel(private val categoryDao: CategoryDao, private val ideaDao: Id
         viewModelScope.launch {
             categoryDao.delete(category)
         }
+    }
+
+    suspend fun requireLocation(categoryName: String): Boolean {
+        val boolInt = categoryDao.requireLocation(categoryName)
+        if (boolInt == 1) return true
+        return false
     }
 
     fun doesCategoryExist(categoryName: String) : Boolean = categoryDao.doesCategoryExist(categoryName)

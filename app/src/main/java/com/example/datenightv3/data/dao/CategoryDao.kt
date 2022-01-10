@@ -26,4 +26,7 @@ interface CategoryDao {
 
     @Query("SELECT EXISTS(SELECT * FROM category WHERE category_name = :category_name)")
     fun doesCategoryExist(category_name: String): Boolean
+
+    @Query("SELECT require_location FROM category WHERE category_name = :category_name")
+    suspend fun requireLocation(category_name: String): Int
 }

@@ -8,4 +8,5 @@ import androidx.room.PrimaryKey
 data class Category (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     @ColumnInfo(name = "category_name") val categoryName: String,
+    @ColumnInfo(name = "require_location") val requireLocation: Int
 )

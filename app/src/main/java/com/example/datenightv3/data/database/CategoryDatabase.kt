@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase
 import com.example.datenightv3.data.classes.Category
 import com.example.datenightv3.data.dao.CategoryDao
 
-@Database(entities = [Category::class], version = 1)
+@Database(entities = [Category::class], version = 3)
 abstract class CategoryDatabase: RoomDatabase() {
     abstract fun categoryDao(): CategoryDao
 
@@ -22,6 +22,7 @@ abstract class CategoryDatabase: RoomDatabase() {
                     CategoryDatabase::class.java,
                     "category_database")
                     .createFromAsset("database/category.db")
+                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance

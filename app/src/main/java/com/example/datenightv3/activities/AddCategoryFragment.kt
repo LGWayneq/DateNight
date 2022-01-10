@@ -2,6 +2,7 @@ package com.example.datenightv3.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -24,7 +25,7 @@ class AddCategoryFragment : Fragment() {
     }
     private var _binding: AddCategoryFragmentBinding? = null
     private val binding get() = _binding!!
-
+    private var requireLocation = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -38,6 +39,11 @@ class AddCategoryFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.saveAction.setOnClickListener { addNewCategory() }
+        binding.locationCheckboxLayout.setOnClickListener {
+            requireLocation = !requireLocation
+            binding.locationCheckbox.toggle()
+        }
+        binding.locationCheckbox.setOnClickListener { requireLocation = !requireLocation }
     }
 
     private fun isEntryValid(): Boolean {
@@ -53,7 +59,7 @@ class AddCategoryFragment : Fragment() {
             if (isDuplicateCategory()) {
                 binding.duplicateCategoryMessage.visibility = View.VISIBLE
             } else {
-                viewModel.addCategory(binding.categoryName.text.toString())
+                viewModel.addCategory(binding.categoryName.text.toString(), requireLocation.compareTo(false))
                 findNavController().navigateUp()
             }
         }

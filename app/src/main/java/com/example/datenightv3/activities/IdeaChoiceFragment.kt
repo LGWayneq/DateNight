@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.R
@@ -15,6 +16,7 @@ import com.example.datenightv3.databinding.IdeaChoiceFragmentBinding
 import com.example.datenightv3.viewmodel.AppViewModel
 import com.example.datenightv3.viewmodel.AppViewModelFactory
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.launch
 
 class IdeaChoiceFragment : Fragment() {
 
@@ -29,6 +31,7 @@ class IdeaChoiceFragment : Fragment() {
             (activity?.application as DatabaseApplication).ideaDatabase.ideaDao()
         )
     }
+    private var requireLocation = false
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -44,7 +47,10 @@ class IdeaChoiceFragment : Fragment() {
 
         viewModel.getCategory(navigationArgs.categoryId).observe(this.viewLifecycleOwner) { category ->
             this.category = category
-            bind(category)
+            lifecycle.coroutineScope.launch {
+                requireLocation = viewModel.requireLocation(navigationArgs.categoryName)
+                bind(category)
+            }
         }
     }
 
@@ -52,7 +58,8 @@ class IdeaChoiceFragment : Fragment() {
         binding.apply {
             ideaListButton.setOnClickListener {
                 val action = IdeaChoiceFragmentDirections.actionIdeaChoiceFragmentToIdeasFragment(
-                    navigationArgs.categoryName
+                    navigationArgs.categoryName,
+                    requireLocation
                 )
                 findNavController().navigate(action)
             }
@@ -61,7 +68,8 @@ class IdeaChoiceFragment : Fragment() {
                 this.suggestionButton.setOnClickListener {
                     val action =
                         IdeaChoiceFragmentDirections.actionIdeaChoiceFragmentToSuggestionFragment(
-                            navigationArgs.categoryName
+                            navigationArgs.categoryName,
+                            requireLocation
                         )
                     findNavController().navigate(action)
                 }

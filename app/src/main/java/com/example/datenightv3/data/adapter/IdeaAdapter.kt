@@ -25,6 +25,7 @@ import kotlin.math.sqrt
 
 class IdeaAdapter(private var latitude: Double?,
                   private var longitude: Double?,
+                  private val requireLocation: Boolean,
                   private val onItemClicked: (Idea) -> Unit, ) : ListAdapter<Idea, IdeaAdapter.IdeaViewHolder>(DiffCallback) {
 
     var distanceList: MutableList<Double> = ArrayList(Collections.nCopies(50,0.0)) //refine the list initialisation
@@ -43,9 +44,9 @@ class IdeaAdapter(private var latitude: Double?,
 
     class IdeaViewHolder(private var binding: IdeaItemBinding): RecyclerView.ViewHolder(binding.root) {
         var distance : Double = 0.0
-        fun bind(idea: Idea, latitude: Double?, longitude: Double?) {
+        fun bind(idea: Idea, latitude: Double?, longitude: Double?, requireLocation: Boolean) {
             binding.ideaNameTextView.text = idea.ideaName
-            if (idea.categoryName == "Food") {
+            if (requireLocation) {
                 val ideaLatitude = idea.ideaLatitude
                 val ideaLongitude = idea.ideaLongitude
                 distance = calcDistance(ideaLatitude, ideaLongitude, latitude, longitude)
@@ -93,7 +94,7 @@ class IdeaAdapter(private var latitude: Double?,
 
     override fun onBindViewHolder(holder: IdeaViewHolder, position: Int) {
         val idea: Idea = getItem(position)
-        holder.bind(idea, this.latitude, this.longitude)
+        holder.bind(idea, this.latitude, this.longitude, requireLocation)
         distanceList[position] = holder.distance
     }
 

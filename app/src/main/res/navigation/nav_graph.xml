@@ -32,6 +32,9 @@
         <argument
             android:name="categoryName"
             app:argType="string" />
+        <argument
+            android:name="requireLocation"
+            app:argType="boolean"/>
         <action
             android:id="@+id/action_ideasFragment_to_ideaDetailsFragment"
             app:destination="@id/ideaDetailsFragment" />
@@ -50,6 +53,9 @@
         <argument
             android:name="categoryName"
             app:argType="string"/>
+        <argument
+            android:name="requireLocation"
+            app:argType="boolean"/>
         <action
             android:id="@+id/action_ideaDetailsFragment_to_addIdeaFragment"
             app:destination="@id/addIdeaFragment" />
@@ -68,6 +74,9 @@
         <argument
             android:name="categoryName"
             app:argType="string"/>
+        <argument
+            android:name="requireLocation"
+            app:argType="boolean"/>
         <action
             android:id="@+id/action_addIdeaFragment_to_ideasFragment"
             app:destination="@id/ideasFragment" />
@@ -98,6 +107,9 @@
             <argument
             android:name="categoryName"
             app:argType="string" />
+            <argument
+                android:name="requireLocation"
+                app:argType="boolean"/>
     </fragment>
 
 </navigation>

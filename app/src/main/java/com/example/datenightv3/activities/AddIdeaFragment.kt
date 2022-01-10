@@ -64,7 +64,7 @@ class AddIdeaFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val id = navigationArgs.ideaId
-        if (navigationArgs.categoryName == "Food") {
+        if (navigationArgs.requireLocation) {
             binding.ideaLocation.visibility = View.VISIBLE
             binding.ideaLocationLabel.visibility = View.VISIBLE
         }
@@ -103,7 +103,7 @@ class AddIdeaFragment : Fragment() {
 
     private suspend fun addNewIdea() {
         if (isEntryValid()) {
-            if (navigationArgs.categoryName == "Food"){
+            if (navigationArgs.requireLocation){
                 val locationName = binding.ideaLocation.text.toString()
                 viewModel.addIdea(
                     binding.ideaName.text.toString(),
@@ -127,7 +127,7 @@ class AddIdeaFragment : Fragment() {
 
     private suspend fun updateIdea() {
         if (isEntryValid()) {
-            if (navigationArgs.categoryName == "Food") {
+            if (navigationArgs.requireLocation) {
                 val locationName = binding.ideaLocation.text.toString()
                 viewModel.getUpdatedIdea(
                     navigationArgs.ideaId,
@@ -153,7 +153,7 @@ class AddIdeaFragment : Fragment() {
     }
 
     private fun isEntryValid(): Boolean {
-        if (navigationArgs.categoryName != "Food") return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
+        if (navigationArgs.requireLocation) return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
         else {
             if (binding.ideaLocation.text.toString() !in locations) {
                 binding.ideaLocationWarning.visibility = View.VISIBLE
