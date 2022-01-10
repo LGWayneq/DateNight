@@ -128,7 +128,6 @@ class IdeasFragment: Fragment() {
     private fun setAutoRefresh() {
         val handler = Handler()
 
-        //val currentTime = SystemClock.currentThreadTimeMillis()
         val refresh = Runnable {
             onViewCreated(binding.root, null)
         }

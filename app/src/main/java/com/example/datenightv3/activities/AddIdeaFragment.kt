@@ -2,6 +2,7 @@ package com.example.datenightv3.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -9,9 +10,11 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.R
@@ -23,6 +26,7 @@ import com.example.datenightv3.viewmodel.AppViewModel
 import com.example.datenightv3.viewmodel.AppViewModelFactory
 import com.example.datenightv3.viewmodel.LocationViewModel
 import com.example.datenightv3.viewmodel.LocationViewModelFactory
+import kotlinx.coroutines.launch
 
 class AddIdeaFragment : Fragment() {
 
@@ -75,8 +79,8 @@ class AddIdeaFragment : Fragment() {
                 idea = it
                 bindEditText(idea)
             }
-        } else {
-            binding.saveAction.setOnClickListener { addNewIdea() }
+        } else binding.saveAction.setOnClickListener {
+            lifecycle.coroutineScope.launch { addNewIdea() }
         }
 
     }
@@ -91,18 +95,23 @@ class AddIdeaFragment : Fragment() {
             ideaName.setText(idea.ideaName, TextView.BufferType.SPANNABLE)
             ideaLocation.setText(idea.ideaLocation, TextView.BufferType.SPANNABLE)
             ideaDescription.setText(idea.ideaDescription, TextView.BufferType.SPANNABLE)
-            saveAction.setOnClickListener { updateIdea() }
+            saveAction.setOnClickListener {
+                lifecycle.coroutineScope.launch {updateIdea()}
+            }
         }
     }
 
-    private fun addNewIdea() {
+    private suspend fun addNewIdea() {
         if (isEntryValid()) {
             if (navigationArgs.categoryName == "Food"){
+                val locationName = binding.ideaLocation.text.toString()
                 viewModel.addIdea(
                     binding.ideaName.text.toString(),
                     navigationArgs.categoryName,
                     binding.ideaDescription.text.toString(),
-                    binding.ideaLocation.text.toString()
+                    locationName,
+                    locationViewModel.getLocationLatitude(locationName),
+                    locationViewModel.getLocationLongitude(locationName)
                 )
             } else {
                 viewModel.addIdea(
@@ -116,16 +125,18 @@ class AddIdeaFragment : Fragment() {
         }
     }
 
-    private fun updateIdea() {
+    private suspend fun updateIdea() {
         if (isEntryValid()) {
             if (navigationArgs.categoryName == "Food") {
+                val locationName = binding.ideaLocation.text.toString()
                 viewModel.getUpdatedIdea(
                     navigationArgs.ideaId,
                     binding.ideaName.text.toString(),
                     navigationArgs.categoryName,
                     binding.ideaDescription.text.toString(),
-                    binding.ideaLocation.text.toString(),
-                    null
+                    locationName,
+                    locationViewModel.getLocationLatitude(locationName),
+                    locationViewModel.getLocationLongitude(locationName)
                 )
             } else {
                 viewModel.getUpdatedIdea(
@@ -143,9 +154,15 @@ class AddIdeaFragment : Fragment() {
 
     private fun isEntryValid(): Boolean {
         if (navigationArgs.categoryName != "Food") return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
-        return !(binding.ideaName.text.toString().isBlank() ||
-                binding.ideaLocation.text.toString().isBlank() ||
-                binding.ideaDescription.text.toString().isBlank()) && binding.ideaLocation.text.toString() in locations
+        else {
+            if (binding.ideaLocation.text.toString() !in locations) {
+                binding.ideaLocationWarning.visibility = View.VISIBLE
+                return false
+            }
+            return !(binding.ideaName.text.toString().isBlank() ||
+                    binding.ideaLocation.text.toString().isBlank() ||
+                    binding.ideaDescription.text.toString().isBlank())
+        }
     }
 
     override fun onDestroyView() {

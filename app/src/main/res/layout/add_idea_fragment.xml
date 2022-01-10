@@ -48,23 +48,32 @@
                 android:singleLine="true"
                 android:visibility="gone"/>
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/idea_location_warning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/red_700"
+            android:text="@string/idea_location_warning"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/idea_location_label"/>
 
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/idea_description_label"
             android:layout_width="0dp"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:layout_marginTop="@dimen/margin_between_elements"
             android:hint="@string/idea_description_req"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/idea_location_label">
+            app:layout_constraintTop_toBottomOf="@id/idea_location_warning">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/idea_description"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:inputType="textCapSentences"
-                android:singleLine="true" />
+                android:gravity="top|start"
+                android:inputType="textCapSentences|textMultiLine" />
         </com.google.android.material.textfield.TextInputLayout>
 
         <Button

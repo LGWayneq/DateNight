@@ -36,4 +36,5 @@
     <string name="idea_name_header">Name</string>
     <string name="idea_distance_header">Distance</string>
     <string name="idea_name_sort_arrow">Idea Name Sort Arrow</string>
+    <string name="idea_location_warning">Please select valid location</string>
 </resources>

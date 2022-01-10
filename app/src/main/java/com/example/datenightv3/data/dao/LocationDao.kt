@@ -20,7 +20,7 @@ interface LocationDao {
     suspend fun getAllLocations(): List<String>
 
     @Query("SELECT location_latitude FROM locations where location_name = :location_name")
-    suspend fun getLocationLatitude(location_name: String?): Double?
+    suspend fun getLocationLatitude(location_name: String?): Double
 
     @Query("SELECT location_longitude FROM locations where location_name = :location_name")
     suspend fun getLocationLongitude(location_name: String?): Double?
