@@ -14,4 +14,4 @@
  4. Improve suggestion feature
  5. <del>Implement sorting based on distance</del> (done)
  6. Improve dark mode UI
- 7. Fix data consistency issue
+ 7. <del>Fix data persistence issue</del> (done)

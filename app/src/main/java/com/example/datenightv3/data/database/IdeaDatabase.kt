@@ -22,7 +22,7 @@ abstract class IdeaDatabase: RoomDatabase() {
                     IdeaDatabase::class.java,
                     "idea_database")
                     .createFromAsset("database/ideas.db")
-                    .fallbackToDestructiveMigration()
+                    //.fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
