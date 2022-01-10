@@ -76,7 +76,6 @@ class CategoryFragment: Fragment() {
                 categoryAdapter.submitList(it)
             }
         }
-        //Add Category currently disabled
         binding.floatingActionButton.setOnClickListener {
             val action = CategoryFragmentDirections
                 .actionCategoryFragmentToAddCategoryFragment()

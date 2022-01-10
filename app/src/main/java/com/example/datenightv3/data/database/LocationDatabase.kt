@@ -22,7 +22,6 @@ abstract class LocationDatabase: RoomDatabase() {
                     LocationDatabase::class.java,
                     "Location_database")
                     .createFromAsset("database/locations.db")
-                    .fallbackToDestructiveMigration()
                     .build()
                 INSTANCE = instance
 

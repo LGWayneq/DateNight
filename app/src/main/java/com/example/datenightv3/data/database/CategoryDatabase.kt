@@ -22,7 +22,6 @@ abstract class CategoryDatabase: RoomDatabase() {
                     CategoryDatabase::class.java,
                     "category_database")
                     .createFromAsset("database/category.db")
-                    .fallbackToDestructiveMigration()
                     .allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
