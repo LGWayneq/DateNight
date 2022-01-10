@@ -96,7 +96,7 @@ class IdeasFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = IdeasFragmentBinding.inflate(inflater, container, false)
-        Thread.sleep(20)
+        Thread.sleep(100)
         setAutoRefresh()
 
         return binding.root
@@ -130,7 +130,11 @@ class IdeasFragment: Fragment() {
         val handler = Handler()
 
         val refresh = Runnable {
-            onViewCreated(binding.root, null)
+            try {
+                onViewCreated(binding.root, null)
+            } catch (e: Exception) {
+                setAutoRefresh()
+            }
         }
         handler.postDelayed(refresh, 300)
     }
