@@ -65,8 +65,8 @@ class IdeaDetailsFragment : Fragment() {
 
     private fun bind(idea: Idea) {
         if (idea.ideaLocation == null) {
-            binding.ideaLocation.visibility = View.INVISIBLE
-            binding.ideaLocationLabel.visibility = View.INVISIBLE
+            binding.ideaLocation.visibility = View.GONE
+            binding.ideaLocationLabel.visibility = View.GONE
         }
         binding.apply {
             ideaName.text = idea.ideaName

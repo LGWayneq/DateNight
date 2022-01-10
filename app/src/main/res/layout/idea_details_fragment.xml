@@ -24,9 +24,10 @@
         android:textSize="18dp"
         android:layout_height="wrap_content"
         android:layout_width="250dp"
-        android:layout_marginLeft="@dimen/margin"
-        app:layout_constraintStart_toEndOf="@id/idea_location_label"
-        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginLeft="@dimen/margin_idea_details"
+        app:layout_constraintStart_toEndOf="@id/idea_name_label"
+        app:layout_constraintTop_toTopOf="@id/idea_name_label"
+        app:layout_constraintBottom_toBottomOf="@id/idea_name_label"
         tools:text="Idea Name" />
 
     <TextView
@@ -44,8 +45,8 @@
         style="@style/Widget.Inventory.TextView"
         android:textSize="18dp"
         android:layout_width="wrap_content"
-        android:layout_marginLeft="@dimen/margin"
-        app:layout_constraintStart_toEndOf="@id/idea_location_label"
+        android:layout_marginLeft="@dimen/margin_idea_details"
+        app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@+id/idea_location_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_location_label"
         tools:text="Location" />
@@ -57,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idea_location"
+        app:layout_constraintTop_toBottomOf="@+id/idea_location_label"
         tools:text="Description of Idea"/>
 
     <Button

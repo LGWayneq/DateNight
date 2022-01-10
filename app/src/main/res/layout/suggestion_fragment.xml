@@ -14,7 +14,6 @@
         android:text="Name:"
         style="@style/Widget.Inventory.TextView"
         android:textSize="20dp"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,7 +21,6 @@
     <TextView
         android:id="@+id/idea_name"
         style="@style/Widget.Inventory.TextView"
-        android:text=""
         android:textSize="18dp"
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/margin"
@@ -36,7 +34,6 @@
         android:text="Location:"
         style="@style/Widget.Inventory.TextView"
         android:textSize="20dp"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
