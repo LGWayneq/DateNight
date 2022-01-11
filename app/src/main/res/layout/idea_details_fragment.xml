@@ -39,6 +39,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin_idea_details"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/idea_name_label"/>
     <TextView
@@ -47,6 +48,7 @@
         android:textSize="18dp"
         android:layout_width="wrap_content"
         android:layout_marginLeft="@dimen/margin_idea_details"
+        android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@+id/idea_location_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_location_label"
@@ -63,27 +65,40 @@
         tools:text="Description of Idea"/>
 
     <Button
-        android:id="@+id/edit_idea"
+        android:id="@+id/locate_button"
         android:layout_marginTop="32dp"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/edit_idea"
-        android:text="@string/edit_idea"
+        android:contentDescription="@string/locate_button"
+        android:text="@string/locate_button"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/idea_description"
         app:tint="@android:color/white" />
 
     <Button
-        android:id="@+id/delete_idea"
+        android:id="@+id/edit_idea"
         style="?attr/materialButtonOutlinedStyle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin"
+        android:contentDescription="@string/edit_idea"
+        android:text="@string/edit_idea"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/locate_button"/>
+
+    <Button
+        android:id="@+id/delete_idea"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/margin"
         android:text="@string/delete"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/edit_idea" />
+        app:layout_constraintTop_toBottomOf="@id/edit_idea"
+        app:tint="@android:color/white"/>
 
 
 

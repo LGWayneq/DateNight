@@ -64,9 +64,17 @@ class IdeaDetailsFragment : Fragment() {
 
 
     private fun bind(idea: Idea) {
-        if (idea.ideaLocation == null) {
-            binding.ideaLocation.visibility = View.GONE
-            binding.ideaLocationLabel.visibility = View.GONE
+        if (idea.ideaLocation != null) {
+            binding.ideaLocation.visibility = View.VISIBLE
+            binding.ideaLocationLabel.visibility = View.VISIBLE
+            binding.locateButton.visibility = View.VISIBLE
+            binding.locateButton.setOnClickListener {
+                val action = IdeaDetailsFragmentDirections.actionIdeaDetailsFragmentToMapFragment(
+                    idea.ideaName,
+                    idea.ideaLocation
+                )
+                findNavController().navigate(action)
+            }
         }
         binding.apply {
             ideaName.text = idea.ideaName

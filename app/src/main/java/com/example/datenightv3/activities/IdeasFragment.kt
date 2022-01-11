@@ -96,7 +96,6 @@ class IdeasFragment: Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = IdeasFragmentBinding.inflate(inflater, container, false)
-        Thread.sleep(100)
         setAutoRefresh()
 
         return binding.root

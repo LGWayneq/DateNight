@@ -59,6 +59,9 @@
         <action
             android:id="@+id/action_ideaDetailsFragment_to_addIdeaFragment"
             app:destination="@id/addIdeaFragment" />
+        <action
+            android:id="@+id/action_ideaDetailsFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
     </fragment>
     <fragment
         android:id="@+id/addIdeaFragment"
@@ -110,6 +113,21 @@
             <argument
                 android:name="requireLocation"
                 app:argType="boolean"/>
+        <action
+            android:id="@+id/action_suggestionFragment_to_mapFragment"
+            app:destination="@id/mapFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/mapFragment"
+        android:name="com.example.datenightv3.activities.MapFragment"
+        android:label="Locate"
+        tools:layout="@layout/map_fragment">
+        <argument
+            android:name="ideaName"
+            app:argType="string" />
+        <argument
+            android:name="locationName"
+            app:argType="string" />
     </fragment>
 
 </navigation>

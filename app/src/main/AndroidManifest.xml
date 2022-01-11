@@ -13,6 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DateNightV3">
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
         <activity
             android:name=".activities.MainActivity"
             android:exported="true">
@@ -30,9 +33,6 @@
                 android:resource="@layout/ideas_fragment" />
         </activity>
 
-        <service
-            android:name=".activities.MainActivity"
-            android:foregroundServiceType="location"></service>
     </application>
 
 </manifest>

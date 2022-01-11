@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.data.DatabaseApplication
 import com.example.datenightv3.data.classes.Idea
@@ -40,9 +41,17 @@ class SuggestionFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         bindSuggestion()
-        if (navigationArgs.categoryName != "Food") {
-            binding.ideaLocation.visibility = View.INVISIBLE
-            binding.ideaLocationLabel.visibility = View.INVISIBLE
+        if (navigationArgs.requireLocation) {
+            binding.ideaLocation.visibility = View.VISIBLE
+            binding.ideaLocationLabel.visibility = View.VISIBLE
+            binding.locateButton.visibility = View.VISIBLE
+            binding.locateButton.setOnClickListener {
+                val action = SuggestionFragmentDirections.actionSuggestionFragmentToMapFragment(
+                    suggestion!!.ideaName,
+                    suggestion!!.ideaLocation!!
+                )
+                findNavController().navigate(action)
+            }
         }
         binding.filterButton.setOnClickListener { } //Filter not yet implemented
         binding.rerollButton.setOnClickListener { bindSuggestion() }
