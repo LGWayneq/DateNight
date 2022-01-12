@@ -1,10 +1,10 @@
 package com.example.datenightv3.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.text.Html
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
@@ -38,9 +38,7 @@ class IdeaDetailsFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        arguments?.let {
-
-        }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -54,7 +52,6 @@ class IdeaDetailsFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         val ideaId: Int = navigationArgs.ideaId
         viewModel.getIdea(ideaId).observe(this.viewLifecycleOwner) { idea ->
             this.idea = idea
@@ -62,6 +59,30 @@ class IdeaDetailsFragment : Fragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_item, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_share -> {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.setType("text/plain")
+                if (navigationArgs.requireLocation) shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text,
+                    idea.ideaName,
+                    idea.ideaLocation,
+                    idea.ideaDescription)
+                )
+                else shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text_no_location,
+                    idea.ideaName,
+                    idea.ideaDescription)
+                )
+                startActivity(Intent.createChooser(shareIntent, "Share using"))
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
 
     private fun bind(idea: Idea) {
         if (idea.ideaLocation != null) {

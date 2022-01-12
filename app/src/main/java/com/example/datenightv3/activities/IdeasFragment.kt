@@ -21,9 +21,7 @@ import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
 import android.util.Log
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import android.widget.SearchView
 import androidx.core.app.ActivityCompat
 import androidx.fragment.app.Fragment
@@ -245,8 +243,12 @@ class IdeasFragment: Fragment() {
         fusedLocationClient.lastLocation
             .addOnFailureListener {  }
             .addOnSuccessListener { location ->
-                this.latitude = location.latitude
-                this.longitude = location.longitude
+                try {
+                    this.latitude = location.latitude
+                    this.longitude = location.longitude
+                } catch (e: Exception) {
+                    //Log.d("test", location.latitude.toString())
+                }
             }
     }
 

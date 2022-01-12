@@ -1,13 +1,13 @@
 package com.example.datenightv3.activities
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.*
 import androidx.fragment.app.Fragment
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.datenightv3.R
 import com.example.datenightv3.data.DatabaseApplication
 import com.example.datenightv3.data.classes.Idea
 import com.example.datenightv3.databinding.SuggestionFragmentBinding
@@ -29,6 +29,11 @@ class SuggestionFragment : Fragment() {
     }
 
     private var suggestion : Idea ?= null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -55,6 +60,31 @@ class SuggestionFragment : Fragment() {
         }
         binding.filterButton.setOnClickListener { } //Filter not yet implemented
         binding.rerollButton.setOnClickListener { bindSuggestion() }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_item, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_share -> {
+                val shareIntent = Intent(Intent.ACTION_SEND)
+                shareIntent.setType("text/plain")
+                if (navigationArgs.requireLocation) shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text,
+                    suggestion?.ideaName,
+                    suggestion?.ideaLocation,
+                    suggestion?.ideaDescription)
+                )
+                else shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text_no_location,
+                    suggestion?.ideaName,
+                    suggestion?.ideaDescription)
+                )
+                startActivity(Intent.createChooser(shareIntent, "Share using"))
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
     }
 
     private fun bindSuggestion() {
