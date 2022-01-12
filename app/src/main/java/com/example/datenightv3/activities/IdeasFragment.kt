@@ -109,7 +109,7 @@ class IdeasFragment: Fragment() {
         ideaAdapter = IdeaAdapter(latitude, longitude, navigationArgs.requireLocation) {
             val action = IdeasFragmentDirections
                 .actionIdeasFragmentToIdeaDetailsFragment(
-                    categoryName = it.categoryName,
+                    categoryName = viewModel.getCategoryName(it.categoryId),
                     ideaId = it.id,
                     requireLocation = navigationArgs.requireLocation
                 )
@@ -122,6 +122,7 @@ class IdeasFragment: Fragment() {
         bindView()
         setUpSearchBar()
         initialiseRefreshListener(view)
+
     }
 
     private fun setAutoRefresh() {
@@ -140,12 +141,15 @@ class IdeasFragment: Fragment() {
     private fun bindView() {
         bindList()
         binding.addIdeaButton.setOnClickListener {
-            val action = IdeasFragmentDirections.actionIdeasFragmentToAddIdeaFragment(
-                titleString = "Add New " + navigationArgs.categoryName + " Idea",
-                categoryName = navigationArgs.categoryName,
-                requireLocation = navigationArgs.requireLocation
-            )
-            this.findNavController().navigate(action)
+            lifecycle.coroutineScope.launch {
+                val categoryId = viewModel.getCategoryId(navigationArgs.categoryName)
+                val action = IdeasFragmentDirections.actionIdeasFragmentToAddIdeaFragment(
+                    titleString = "Add New " + navigationArgs.categoryName + " Idea",
+                    categoryId = categoryId,
+                    requireLocation = navigationArgs.requireLocation
+                )
+                findNavController().navigate(action)
+            }
         }
         binding.ideaNameLayout.setOnClickListener {
             if (currentSort == sortType.NAME_ASCEND) {
@@ -183,11 +187,11 @@ class IdeasFragment: Fragment() {
     private fun bindList() {
         ideaAdapter.submitList(null)
         lifecycle.coroutineScope.launch {
-            viewModel.getIdeaInCategory(navigationArgs.categoryName).collect {
+            viewModel.getIdeaInCategory(viewModel.getCategoryId(navigationArgs.categoryName)).collect {
                 ideaAdapter.submitList(it)
                 val dataSorter = DataSorter(it.toMutableList(),
                     ideaAdapter.distanceList,
-                    viewModel.getIdeasCount(navigationArgs.categoryName))
+                    viewModel.getIdeasCount(viewModel.getCategoryId(navigationArgs.categoryName)))
                 if (currentSort == sortType.NAME_ASCEND) ideaAdapter.submitList(it)
                 else if (currentSort == sortType.NAME_DESCEND) ideaAdapter.submitList(it.reversed())
                 else if (currentSort == sortType.DIST_ASCEND) { ideaAdapter.submitList(dataSorter.sortDistance()) }
@@ -200,7 +204,7 @@ class IdeasFragment: Fragment() {
         binding.ideaSearchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextChange(query: String?): Boolean {
                 lifecycle.coroutineScope.launch {
-                    viewModel.queryIdea(query, navigationArgs.categoryName).collect {
+                    viewModel.queryIdea(query, viewModel.getCategoryId(navigationArgs.categoryName)).collect {
                         ideaAdapter.submitList(it)
                     }
                 }
@@ -209,7 +213,7 @@ class IdeasFragment: Fragment() {
 
             override fun onQueryTextSubmit(query: String?): Boolean {
                 lifecycle.coroutineScope.launch {
-                    viewModel.queryIdea(query, navigationArgs.categoryName).collect {
+                    viewModel.queryIdea(query, viewModel.getCategoryId(navigationArgs.categoryName)).collect {
                         ideaAdapter.submitList(it)
                     }
                 }

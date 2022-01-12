@@ -8,11 +8,11 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "ideas")
 data class Idea (
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
-    @ColumnInfo(name = "idea_name") val ideaName: String,
-    @NonNull @ColumnInfo(name = "category_name") val categoryName: String,
-    @ColumnInfo(name = "idea_location") val ideaLocation: String?,
-    @ColumnInfo(name = "idea_description") val ideaDescription: String?,
-    @ColumnInfo(name = "idea_latitude") val ideaLatitude: Double?,
-    @ColumnInfo(name = "idea_longitude") val ideaLongitude: Double?,
+    val name: String,
+    @NonNull @ColumnInfo(name = "category_id") val categoryId: Int,
+    @ColumnInfo(name = "location_id") val locationId: Int?,
+    val description: String?,
+    val latitude: Double?,
+    val longitude: Double?,
 )
 

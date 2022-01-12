@@ -42,4 +42,8 @@
     <string name="share">Share</string>
     <string name="share_text">Name: %1$s\nLocation: %2$s\nDescription: %3$s</string>
     <string name="share_text_no_location">Name: %1$s\nDescription: %2$s</string>
+    <string name="delete_category">Delete Category</string>
+    <string name="edit_category">Edit Category</string>
+    <string name="suggest">Suggest</string>
+    <string name="idea_list">Idea List</string>
 </resources>

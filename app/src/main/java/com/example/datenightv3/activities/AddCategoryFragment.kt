@@ -8,12 +8,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
+import android.widget.TextView
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.data.DatabaseApplication
+import com.example.datenightv3.data.classes.Category
 import com.example.datenightv3.databinding.AddCategoryFragmentBinding
 import com.example.datenightv3.viewmodel.AppViewModel
 import com.example.datenightv3.viewmodel.AppViewModelFactory
+import kotlinx.coroutines.launch
 
 class AddCategoryFragment : Fragment() {
 
@@ -25,8 +32,9 @@ class AddCategoryFragment : Fragment() {
     }
     private var _binding: AddCategoryFragmentBinding? = null
     private val binding get() = _binding!!
+    private val navigationArgs: AddCategoryFragmentArgs by navArgs()
     private var requireLocation = false
-
+    private lateinit var category: Category
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -38,12 +46,43 @@ class AddCategoryFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.saveAction.setOnClickListener { addNewCategory() }
+
+        val id = navigationArgs.categoryId
+        if (id > 0) {
+            viewModel.getCategory(id).observe(this.viewLifecycleOwner) {
+                category = it
+                bindEditText(category)
+            }
+        }
+        else binding.saveAction.setOnClickListener { addNewCategory() }
         binding.locationCheckboxLayout.setOnClickListener {
             requireLocation = !requireLocation
             binding.locationCheckbox.toggle()
         }
         binding.locationCheckbox.setOnClickListener { requireLocation = !requireLocation }
+    }
+
+    private fun bindEditText(category: Category) {
+        binding.apply {
+            categoryName.setText(category.categoryName, TextView.BufferType.SPANNABLE)
+            if (category.requireLocation == 1) {
+                requireLocation = !requireLocation
+                locationCheckbox.toggle()
+            }
+            saveAction.setOnClickListener {
+                lifecycle.coroutineScope.launch {updateCategory()}
+            }
+        }
+    }
+
+    private fun updateCategory() {
+        if (isEntryValid()) {
+            viewModel.getUpdatedCategory(navigationArgs.categoryId,
+            binding.categoryName.text.toString(),
+            requireLocation.compareTo(false))
+            findNavController().navigateUp()
+            findNavController().navigateUp()
+        }
     }
 
     private fun isEntryValid(): Boolean {

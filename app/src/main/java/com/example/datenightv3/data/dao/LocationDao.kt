@@ -19,9 +19,15 @@ interface LocationDao {
     @Query("SELECT location_name FROM locations ORDER BY location_name ASC")
     suspend fun getAllLocations(): List<String>
 
-    @Query("SELECT location_latitude FROM locations where location_name = :location_name")
-    suspend fun getLocationLatitude(location_name: String?): Double
+    @Query("SELECT location_latitude FROM locations where id = :locationId")
+    suspend fun getLocationLatitude(locationId: Int?): Double
 
-    @Query("SELECT location_longitude FROM locations where location_name = :location_name")
-    suspend fun getLocationLongitude(location_name: String?): Double?
+    @Query("SELECT location_longitude FROM locations where id = :locationId")
+    suspend fun getLocationLongitude(locationId: Int?): Double?
+
+    @Query("SELECT location_name FROM locations WHERE id = :locationId")
+    suspend fun getLocationName(locationId: Int?): String
+
+    @Query("SELECT id FROM locations WHERE location_name = :locationName")
+    suspend fun getLocationId(locationName: String?): Int
 }

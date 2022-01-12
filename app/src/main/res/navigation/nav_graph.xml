@@ -24,6 +24,10 @@
         <action
             android:id="@+id/action_addCategoryFragment_to_categoryFragment"
             app:destination="@id/categoryFragment" />
+        <argument
+            android:name="categoryId"
+            android:defaultValue="-1"
+            app:argType="integer" />
     </fragment>
     <fragment
         android:id="@+id/ideasFragment"
@@ -75,8 +79,8 @@
             android:defaultValue="-1"
             app:argType="integer"/>
         <argument
-            android:name="categoryName"
-            app:argType="string"/>
+            android:name="categoryId"
+            app:argType="integer"/>
         <argument
             android:name="requireLocation"
             app:argType="boolean"/>
@@ -101,6 +105,9 @@
         <action
             android:id="@+id/action_ideaChoiceFragment_to_suggestionFragment"
             app:destination="@id/suggestionFragment" />
+        <action
+            android:id="@+id/action_ideaChoiceFragment_to_addCategoryFragment"
+            app:destination="@id/addCategoryFragment" />
     </fragment>
     <fragment
         android:id="@+id/suggestionFragment"
@@ -108,6 +115,9 @@
         android:label="{categoryName}"
         tools:layout="@layout/suggestion_fragment" >
             <argument
+            android:name="categoryId"
+            app:argType="integer" />
+        <argument
             android:name="categoryName"
             app:argType="string" />
             <argument
@@ -126,8 +136,8 @@
             android:name="ideaName"
             app:argType="string" />
         <argument
-            android:name="locationName"
-            app:argType="string" />
+            android:name="locationId"
+            app:argType="integer" />
     </fragment>
 
 </navigation>

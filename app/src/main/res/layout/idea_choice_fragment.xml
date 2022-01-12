@@ -11,7 +11,7 @@
         android:id="@+id/suggestion_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Suggest"
+        android:text="@string/suggest"
         android:textSize="26dp"
         android:layout_marginTop="@dimen/margin"
         android:layout_marginLeft="@dimen/margin"
@@ -36,7 +36,7 @@
         android:id="@+id/idea_list_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Idea List"
+        android:text="@string/idea_list"
         android:textSize="26dp"
         android:layout_marginTop="@dimen/margin"
         android:layout_marginBottom="120dp"
@@ -47,10 +47,10 @@
         app:layout_constraintTop_toBottomOf="@id/category_empty_warning" />
 
     <Button
-        android:id="@+id/delete_category_button"
+        android:id="@+id/edit_category_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Delete Category"
+        android:text="@string/edit_category"
         android:textSize="26dp"
         android:layout_marginTop="@dimen/margin"
         android:layout_marginBottom="@dimen/margin"
@@ -59,4 +59,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/idea_list_button" />
+
+    <Button
+        android:id="@+id/delete_category_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/delete_category"
+        android:textSize="26dp"
+        android:layout_marginTop="@dimen/margin"
+        android:layout_marginBottom="@dimen/margin"
+        android:layout_marginLeft="@dimen/margin"
+        android:layout_marginRight="@dimen/margin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/edit_category_button" />
 </androidx.constraintlayout.widget.ConstraintLayout>

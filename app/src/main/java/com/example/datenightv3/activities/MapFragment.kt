@@ -74,8 +74,8 @@ class MapFragment : Fragment() {
 
             lifecycle.coroutineScope.launch {
                 val marker = LatLng(
-                    locationViewModel.getLocationLatitude(navigationArgs.locationName)!!,
-                    locationViewModel.getLocationLongitude(navigationArgs.locationName)!!
+                    locationViewModel.getLocationLatitude(navigationArgs.locationId)!!,
+                    locationViewModel.getLocationLongitude(navigationArgs.locationId)!!
                 )
                 it.addMarker(MarkerOptions().position(marker).title(navigationArgs.ideaName))
 

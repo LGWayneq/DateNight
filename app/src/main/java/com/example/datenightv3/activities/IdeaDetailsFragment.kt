@@ -6,6 +6,7 @@ import android.text.Html
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.coroutineScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.R
@@ -14,8 +15,11 @@ import com.example.datenightv3.data.classes.Idea
 import com.example.datenightv3.databinding.IdeaDetailsFragmentBinding
 import com.example.datenightv3.viewmodel.AppViewModel
 import com.example.datenightv3.viewmodel.AppViewModelFactory
+import com.example.datenightv3.viewmodel.LocationViewModel
+import com.example.datenightv3.viewmodel.LocationViewModelFactory
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
+import kotlinx.coroutines.launch
 
 class IdeaDetailsFragment : Fragment() {
 
@@ -23,14 +27,16 @@ class IdeaDetailsFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val navigationArgs: IdeaDetailsFragmentArgs by navArgs()
-    private val ideasFragmentNavigationArgs: IdeasFragmentArgs by navArgs()
-
-    private lateinit var fusedLocationClient: FusedLocationProviderClient
 
     private val viewModel: AppViewModel by activityViewModels {
         AppViewModelFactory(
             (activity?.application as DatabaseApplication).categoryDatabase.categoryDao(),
             (activity?.application as DatabaseApplication).ideaDatabase.ideaDao()
+        )
+    }
+    private val locationViewModel: LocationViewModel by activityViewModels {
+        LocationViewModelFactory(
+            (activity?.application as DatabaseApplication).locationDatabase.LocationDao()
         )
     }
 
@@ -68,14 +74,19 @@ class IdeaDetailsFragment : Fragment() {
             R.id.action_share -> {
                 val shareIntent = Intent(Intent.ACTION_SEND)
                 shareIntent.setType("text/plain")
-                if (navigationArgs.requireLocation) shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text,
-                    idea.ideaName,
-                    idea.ideaLocation,
-                    idea.ideaDescription)
-                )
+                if (navigationArgs.requireLocation) {
+                    lifecycle.coroutineScope.launch {
+                        val locationName = locationViewModel.getLocationName(idea.locationId)
+                        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text,
+                            idea.name,
+                            locationName,
+                            idea.description)
+                        )
+                    }
+                }
                 else shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text_no_location,
-                    idea.ideaName,
-                    idea.ideaDescription)
+                    idea.name,
+                    idea.description)
                 )
                 startActivity(Intent.createChooser(shareIntent, "Share using"))
                 return true
@@ -85,28 +96,30 @@ class IdeaDetailsFragment : Fragment() {
     }
 
     private fun bind(idea: Idea) {
-        if (idea.ideaLocation != null) {
+        if (navigationArgs.requireLocation) {
             binding.ideaLocation.visibility = View.VISIBLE
             binding.ideaLocationLabel.visibility = View.VISIBLE
             binding.locateButton.visibility = View.VISIBLE
             binding.locateButton.setOnClickListener {
                 val action = IdeaDetailsFragmentDirections.actionIdeaDetailsFragmentToMapFragment(
-                    idea.ideaName,
-                    idea.ideaLocation
+                    idea.name,
+                    idea.locationId!!
                 )
                 findNavController().navigate(action)
             }
         }
         binding.apply {
-            ideaName.text = idea.ideaName
-            ideaLocation.text = idea.ideaLocation
-            ideaDescription.text = idea.ideaDescription
+            ideaName.text = idea.name
+            lifecycle.coroutineScope.launch {
+                ideaLocation.text = locationViewModel.getLocationName(idea.locationId)
+            }
+            ideaDescription.text = idea.description
             binding.deleteIdea.setOnClickListener { showDeleteConfirmationDialog() }
             editIdea.setOnClickListener {
                 val action = IdeaDetailsFragmentDirections.actionIdeaDetailsFragmentToAddIdeaFragment(
-                    titleString = "Edit " + idea.ideaName,
+                    titleString = "Edit " + idea.name,
                     ideaId = idea.id,
-                    categoryName = idea.categoryName,
+                    categoryId = idea.categoryId,
                     requireLocation = navigationArgs.requireLocation
                 )
                 findNavController().navigate(action)

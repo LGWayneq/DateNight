@@ -13,7 +13,8 @@
  3. Add icons and images
  4. Improve suggestion feature
  5. <del>Implement sorting based on distance</del> (done)
- 6. Improve dark mode UI
+ 6. <del>Improve dark mode UI</del> (done)
  7. <del>Fix data persistence issue</del> (done)
  8. <del>Implement map feature</del> (done)
  9. <del>Implement sharing function</del> (done)
+ 10. <del>Refactor database to use IDs instead of names</del> (done)

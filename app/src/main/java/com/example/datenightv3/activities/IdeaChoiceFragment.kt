@@ -48,7 +48,7 @@ class IdeaChoiceFragment : Fragment() {
         viewModel.getCategory(navigationArgs.categoryId).observe(this.viewLifecycleOwner) { category ->
             this.category = category
             lifecycle.coroutineScope.launch {
-                requireLocation = viewModel.requireLocation(navigationArgs.categoryName)
+                requireLocation = viewModel.requireLocation(navigationArgs.categoryId)
                 bind(category)
             }
         }
@@ -64,10 +64,11 @@ class IdeaChoiceFragment : Fragment() {
                 findNavController().navigate(action)
             }
 
-            if (viewModel.doesIdeaWithCategoryExist(navigationArgs.categoryName)) {
+            if (viewModel.doesIdeaWithCategoryExist(navigationArgs.categoryId)) {
                 this.suggestionButton.setOnClickListener {
                     val action =
                         IdeaChoiceFragmentDirections.actionIdeaChoiceFragmentToSuggestionFragment(
+                            navigationArgs.categoryId,
                             navigationArgs.categoryName,
                             requireLocation
                         )
@@ -77,7 +78,10 @@ class IdeaChoiceFragment : Fragment() {
                 this.suggestionButton.isEnabled = false
                 this.categoryEmptyWarning.visibility = View.VISIBLE
             }
-
+            editCategoryButton.setOnClickListener {
+                val action = IdeaChoiceFragmentDirections.actionIdeaChoiceFragmentToAddCategoryFragment(navigationArgs.categoryId)
+                findNavController().navigate(action)
+            }
             deleteCategoryButton.setOnClickListener { showDeleteConfirmationDialog() }
         }
     }

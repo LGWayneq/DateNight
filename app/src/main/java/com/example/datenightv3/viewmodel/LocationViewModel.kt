@@ -18,9 +18,13 @@ class LocationViewModel(private val locationDao: LocationDao): ViewModel() {
         return locationNamesList
     }
 
-    suspend fun getLocationLatitude(locationName: String?): Double? = locationDao.getLocationLatitude(locationName)
+    suspend fun getLocationLatitude(locationId: Int?): Double? = locationDao.getLocationLatitude(locationId)
 
-    suspend fun getLocationLongitude(locationName: String?): Double? = locationDao.getLocationLongitude(locationName)
+    suspend fun getLocationLongitude(locationId: Int?): Double? = locationDao.getLocationLongitude(locationId)
+
+    suspend fun getLocationName(locationId: Int?): String = locationDao.getLocationName(locationId)
+
+    suspend fun getLocationId(locationName: String?): Int = locationDao.getLocationId(locationName)
 
 }
 

@@ -45,10 +45,10 @@ class IdeaAdapter(private var latitude: Double?,
     class IdeaViewHolder(private var binding: IdeaItemBinding): RecyclerView.ViewHolder(binding.root) {
         var distance : Double = 0.0
         fun bind(idea: Idea, latitude: Double?, longitude: Double?, requireLocation: Boolean) {
-            binding.ideaNameTextView.text = idea.ideaName
+            binding.ideaNameTextView.text = idea.name
             if (requireLocation) {
-                val ideaLatitude = idea.ideaLatitude
-                val ideaLongitude = idea.ideaLongitude
+                val ideaLatitude = idea.latitude
+                val ideaLongitude = idea.longitude
                 distance = calcDistance(ideaLatitude, ideaLongitude, latitude, longitude)
                 binding.ideaDistanceTextView.text = String.format("%.1f", distance) + "km"
             } else {

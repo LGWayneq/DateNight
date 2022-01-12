@@ -15,6 +15,7 @@ import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.example.datenightv3.R
@@ -63,17 +64,17 @@ class AddIdeaFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val id = navigationArgs.ideaId
+
         if (navigationArgs.requireLocation) {
             binding.ideaLocation.visibility = View.VISIBLE
             binding.ideaLocationLabel.visibility = View.VISIBLE
         }
 
-        locationViewModel.getAllLocationNames().observe(viewLifecycleOwner, Observer {
+        locationViewModel.getAllLocationNames().observe(this.viewLifecycleOwner) {
             locations = it
             bindAutoComplete()
-        })
-
+        }
+        val id = navigationArgs.ideaId
         if (id > 0) {
             viewModel.getIdea(id).observe(this.viewLifecycleOwner) {
                 idea = it
@@ -92,9 +93,12 @@ class AddIdeaFragment : Fragment() {
 
     private fun bindEditText(idea: Idea) {
         binding.apply {
-            ideaName.setText(idea.ideaName, TextView.BufferType.SPANNABLE)
-            ideaLocation.setText(idea.ideaLocation, TextView.BufferType.SPANNABLE)
-            ideaDescription.setText(idea.ideaDescription, TextView.BufferType.SPANNABLE)
+            ideaName.setText(idea.name, TextView.BufferType.SPANNABLE)
+            lifecycle.coroutineScope.launch {
+                val locationId = locationViewModel.getLocationName(idea.locationId)
+                ideaLocation.setText(locationId, TextView.BufferType.SPANNABLE)
+            }
+            ideaDescription.setText(idea.description, TextView.BufferType.SPANNABLE)
             saveAction.setOnClickListener {
                 lifecycle.coroutineScope.launch {updateIdea()}
             }
@@ -104,19 +108,19 @@ class AddIdeaFragment : Fragment() {
     private suspend fun addNewIdea() {
         if (isEntryValid()) {
             if (navigationArgs.requireLocation){
-                val locationName = binding.ideaLocation.text.toString()
+                val locationId = locationViewModel.getLocationId(binding.ideaLocation.text.toString())
                 viewModel.addIdea(
                     binding.ideaName.text.toString(),
-                    navigationArgs.categoryName,
+                    navigationArgs.categoryId,
                     binding.ideaDescription.text.toString(),
-                    locationName,
-                    locationViewModel.getLocationLatitude(locationName),
-                    locationViewModel.getLocationLongitude(locationName)
+                    locationId,
+                    locationViewModel.getLocationLatitude(locationId),
+                    locationViewModel.getLocationLongitude(locationId)
                 )
             } else {
                 viewModel.addIdea(
                     binding.ideaName.text.toString(),
-                    navigationArgs.categoryName,
+                    navigationArgs.categoryId,
                     binding.ideaDescription.text.toString(),
                     null
                 )
@@ -128,23 +132,22 @@ class AddIdeaFragment : Fragment() {
     private suspend fun updateIdea() {
         if (isEntryValid()) {
             if (navigationArgs.requireLocation) {
-                val locationName = binding.ideaLocation.text.toString()
+                val locationId = locationViewModel.getLocationId(binding.ideaLocation.text.toString())
                 viewModel.getUpdatedIdea(
                     navigationArgs.ideaId,
                     binding.ideaName.text.toString(),
-                    navigationArgs.categoryName,
+                    navigationArgs.categoryId,
                     binding.ideaDescription.text.toString(),
-                    locationName,
-                    locationViewModel.getLocationLatitude(locationName),
-                    locationViewModel.getLocationLongitude(locationName)
+                    locationId,
+                    locationViewModel.getLocationLatitude(locationId),
+                    locationViewModel.getLocationLongitude(locationId)
                 )
             } else {
                 viewModel.getUpdatedIdea(
                     navigationArgs.ideaId,
                     binding.ideaName.text.toString(),
-                    navigationArgs.categoryName,
+                    navigationArgs.categoryId,
                     binding.ideaDescription.text.toString(),
-                    null,
                     null
                 )
             }

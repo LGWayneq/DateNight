@@ -15,27 +15,27 @@ interface IdeaDao {
     @Delete
     suspend fun delete(idea: Idea)
 
-    @Query("SELECT * FROM ideas ORDER BY idea_name ASC")
+    @Query("SELECT * FROM ideas ORDER BY name ASC")
     fun getAllIdeas(): Flow<List<Idea>>
 
-    @Query("SELECT * FROM ideas WHERE idea_name = :idea_name")
+    @Query("SELECT * FROM ideas WHERE name = :idea_name")
     fun getIdeaByName(idea_name: String?): Flow<List<Idea>>
 
     @Query("SELECT * FROM ideas WHERE id = :id")
     fun getIdeaById(id: Int): Flow<Idea>
 
-    @Query("SELECT * FROM ideas WHERE category_name = :category_name ORDER BY idea_name ASC")
-    fun getIdeasByCategory(category_name: String): Flow<List<Idea>>
+    @Query("SELECT * FROM ideas WHERE category_id = :categoryId ORDER BY name ASC")
+    fun getIdeasByCategory(categoryId: Int): Flow<List<Idea>>
 
-    @Query("SELECT * FROM ideas WHERE category_name = :category_name ORDER BY RANDOM() LIMIT 1")
-    fun getRandomIdeaInCategory(category_name: String): Flow<Idea>
+    @Query("SELECT * FROM ideas WHERE category_id = :categoryId ORDER BY RANDOM() LIMIT 1")
+    fun getRandomIdeaInCategory(categoryId: Int): Flow<Idea>
 
-    @Query("SELECT EXISTS(SELECT * FROM ideas WHERE category_name = :category_name)")
-    fun doesIdeaWithCategoryExist(category_name: String): Boolean
+    @Query("SELECT EXISTS(SELECT * FROM ideas WHERE category_id = :categoryId)")
+    fun doesIdeaWithCategoryExist(categoryId: Int): Boolean
 
-    @Query("SELECT * FROM ideas WHERE idea_name LIKE :query AND category_name = :category_name ORDER BY idea_name ASC")
-    fun searchIdea(query: String?, category_name: String): Flow<List<Idea>>
+    @Query("SELECT * FROM ideas WHERE name LIKE :query AND category_id = :categoryId ORDER BY name ASC")
+    fun searchIdea(query: String?, categoryId: Int): Flow<List<Idea>>
 
-    @Query("SELECT COUNT(*) FROM ideas WHERE category_name = :category_name")
-    fun getIdeasCount(category_name: String): Int
+    @Query("SELECT COUNT(*) FROM ideas WHERE category_id = :categoryId")
+    fun getIdeasCount(categoryId: Int): Int
 }
