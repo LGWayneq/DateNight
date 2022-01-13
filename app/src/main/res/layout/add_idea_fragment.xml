@@ -87,4 +87,5 @@
             app:layout_constraintTop_toBottomOf="@+id/idea_description_label" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>

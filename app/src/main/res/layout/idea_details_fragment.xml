@@ -24,7 +24,7 @@
         android:textSize="18dp"
         android:layout_height="wrap_content"
         android:layout_width="250dp"
-        android:layout_marginLeft="@dimen/margin_idea_details"
+        android:layout_marginLeft="@dimen/margin_idea_details_horizontal"
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@id/idea_name_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_name_label"
@@ -45,13 +45,22 @@
         android:id="@+id/idea_location"
         style="@style/Widget.Inventory.TextView"
         android:textSize="18dp"
-        android:layout_width="wrap_content"
-        android:layout_marginLeft="@dimen/margin_idea_details"
+        android:layout_width="250dp"
+        android:layout_marginLeft="@dimen/margin_idea_details_horizontal"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@+id/idea_location_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_location_label"
         tools:text="Location" />
+
+    <View
+        android:id="@+id/divider"
+        style="@style/Divider"
+        android:layout_marginTop="@dimen/margin_idea_details"
+        android:layout_marginBottom="@dimen/margin_idea_details"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/idea_location" />
 
     <TextView
         android:id="@+id/idea_description"
@@ -60,7 +69,7 @@
         android:layout_width="wrap_content"
         android:layout_marginTop="32dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/idea_location_label"
+        app:layout_constraintTop_toBottomOf="@+id/divider"
         tools:text="Description of Idea"/>
 
     <Button

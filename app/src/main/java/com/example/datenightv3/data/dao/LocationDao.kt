@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 @Dao
 interface LocationDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
-    suspend fun insert(location: Location)
+    suspend fun insert(location: Location): Long
 
     @Update
     suspend fun update(location: Location)
@@ -29,5 +29,6 @@ interface LocationDao {
     suspend fun getLocationName(locationId: Int?): String
 
     @Query("SELECT id FROM locations WHERE location_name = :locationName")
-    suspend fun getLocationId(locationName: String?): Int
+    suspend fun getLocationId(locationName: String?): Int?
+
 }

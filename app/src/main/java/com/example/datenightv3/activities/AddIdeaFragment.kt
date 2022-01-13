@@ -2,7 +2,9 @@ package com.example.datenightv3.activities
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Looper
 import android.util.Log
+import android.view.KeyEvent
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -10,24 +12,23 @@ import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
 import android.widget.ArrayAdapter
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.activityViewModels
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.coroutineScope
-import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
-import com.example.datenightv3.R
 import com.example.datenightv3.data.DatabaseApplication
+import com.example.datenightv3.data.WebInterface
 import com.example.datenightv3.data.classes.Idea
-import com.example.datenightv3.data.classes.Location
 import com.example.datenightv3.databinding.AddIdeaFragmentBinding
 import com.example.datenightv3.viewmodel.AppViewModel
 import com.example.datenightv3.viewmodel.AppViewModelFactory
 import com.example.datenightv3.viewmodel.LocationViewModel
 import com.example.datenightv3.viewmodel.LocationViewModelFactory
 import kotlinx.coroutines.launch
+import org.jsoup.nodes.Document
+import org.jsoup.Jsoup
+import org.jsoup.select.Elements
+import java.io.IOException
 
 class AddIdeaFragment : Fragment() {
 
@@ -48,9 +49,12 @@ class AddIdeaFragment : Fragment() {
             (activity?.application as DatabaseApplication).locationDatabase.LocationDao()
         )
     }
+    private lateinit var webInterface: WebInterface
 
     private lateinit var idea: Idea
-    lateinit var locations: List<String>
+    private lateinit var locations: List<String>
+    private var latitude: Double ?= null
+    private var longitude: Double ?= null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,10 +84,20 @@ class AddIdeaFragment : Fragment() {
                 idea = it
                 bindEditText(idea)
             }
-        } else binding.saveAction.setOnClickListener {
-            lifecycle.coroutineScope.launch { addNewIdea() }
+        } else {
+            webInterface = WebInterface()
+            binding.saveAction.setOnClickListener {
+                lifecycle.coroutineScope.launch { addNewIdea() }
+            }
+            binding.ideaName.setOnFocusChangeListener { v, hasFocus ->
+                if (!hasFocus) {
+                    lifecycle.coroutineScope.launch {
+                        val locationName = webInterface.getLocationName(binding.ideaName.text.toString())
+                        if (locationName != null) binding.ideaLocation.setText(locationName, TextView.BufferType.SPANNABLE)
+                    }
+                }
+            }
         }
-
     }
 
     private fun bindAutoComplete() {
@@ -95,8 +109,8 @@ class AddIdeaFragment : Fragment() {
         binding.apply {
             ideaName.setText(idea.name, TextView.BufferType.SPANNABLE)
             lifecycle.coroutineScope.launch {
-                val locationId = locationViewModel.getLocationName(idea.locationId)
-                ideaLocation.setText(locationId, TextView.BufferType.SPANNABLE)
+                val locationName = locationViewModel.getLocationName(idea.locationId)
+                ideaLocation.setText(locationName, TextView.BufferType.SPANNABLE)
             }
             ideaDescription.setText(idea.description, TextView.BufferType.SPANNABLE)
             saveAction.setOnClickListener {
@@ -108,7 +122,8 @@ class AddIdeaFragment : Fragment() {
     private suspend fun addNewIdea() {
         if (isEntryValid()) {
             if (navigationArgs.requireLocation){
-                val locationId = locationViewModel.getLocationId(binding.ideaLocation.text.toString())
+                var locationId = locationViewModel.getLocationId(binding.ideaLocation.text.toString())
+                if (locationId == null) locationId = locationViewModel.addLocation(binding.ideaLocation.text.toString(), latitude!!, longitude!!)
                 viewModel.addIdea(
                     binding.ideaName.text.toString(),
                     navigationArgs.categoryId,
@@ -117,6 +132,7 @@ class AddIdeaFragment : Fragment() {
                     locationViewModel.getLocationLatitude(locationId),
                     locationViewModel.getLocationLongitude(locationId)
                 )
+                findNavController().navigateUp()
             } else {
                 viewModel.addIdea(
                     binding.ideaName.text.toString(),
@@ -124,8 +140,8 @@ class AddIdeaFragment : Fragment() {
                     binding.ideaDescription.text.toString(),
                     null
                 )
+                this.findNavController().navigateUp()
             }
-            this.findNavController().navigateUp()
         }
     }
 
@@ -155,12 +171,17 @@ class AddIdeaFragment : Fragment() {
         }
     }
 
-    private fun isEntryValid(): Boolean {
-        if (navigationArgs.requireLocation) return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
+    private suspend fun isEntryValid(): Boolean {
+        if (!navigationArgs.requireLocation) return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
         else {
             if (binding.ideaLocation.text.toString() !in locations) {
-                binding.ideaLocationWarning.visibility = View.VISIBLE
-                return false
+                val coordinateList = webInterface.getLocationCoordinates(binding.ideaLocation.text.toString())
+                latitude = coordinateList[0]
+                longitude = coordinateList[1]
+                if (latitude == null || latitude == 45.0 || longitude == null || longitude == -90.0) {
+                    binding.ideaLocationWarning.visibility = View.VISIBLE
+                    return false
+                }
             }
             return !(binding.ideaName.text.toString().isBlank() ||
                     binding.ideaLocation.text.toString().isBlank() ||

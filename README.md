@@ -18,3 +18,5 @@
  8. <del>Implement map feature</del> (done)
  9. <del>Implement sharing function</del> (done)
  10. <del>Refactor database to use IDs instead of names</del> (done)
+ 11. <del>Implement location auto-fill feature when adding ideas</del> (done)
+ 12. Implement loading bars/spinners

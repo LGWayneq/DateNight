@@ -1,6 +1,7 @@
 package com.example.datenightv3.viewmodel
 
 import androidx.lifecycle.*
+import com.example.datenightv3.data.classes.Location
 import com.example.datenightv3.data.dao.LocationDao
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
@@ -24,7 +25,12 @@ class LocationViewModel(private val locationDao: LocationDao): ViewModel() {
 
     suspend fun getLocationName(locationId: Int?): String = locationDao.getLocationName(locationId)
 
-    suspend fun getLocationId(locationName: String?): Int = locationDao.getLocationId(locationName)
+    suspend fun getLocationId(locationName: String?): Int? = locationDao.getLocationId(locationName)
+
+    suspend fun addLocation(locationName: String, latitude: Double, longitude: Double): Int {
+        val newLocation = Location(locationName = locationName, locationLatitude = latitude, locationLongitude = longitude)
+        return locationDao.insert(newLocation).toInt()
+    }
 
 }
 
