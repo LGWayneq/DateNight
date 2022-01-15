@@ -16,7 +16,7 @@
  6. <del>Improve dark mode UI</del> (done)
  7. <del>Fix data persistence issue</del> (done)
  8. <del>Implement map feature</del> (done)
- 9. <del>Implement sharing function</del> (done)
+ 9. <del>Implement sharing function</del> (done, bugs fixed)
  10. <del>Refactor database to use IDs instead of names</del> (done)
- 11. <del>Implement location auto-fill feature when adding ideas</del> (done)
- 12. Implement loading bars/spinners
+ 11. <del>Implement location auto-fill feature when adding ideas</del> (done, bugs fixed)
+ 12. Implement loading bars/spinners (done for add ideas fragment)

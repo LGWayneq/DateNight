@@ -41,6 +41,7 @@ class IdeaDetailsFragment : Fragment() {
     }
 
     private lateinit var idea: Idea
+    private lateinit var locationName: String
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +60,12 @@ class IdeaDetailsFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val ideaId: Int = navigationArgs.ideaId
-        viewModel.getIdea(ideaId).observe(this.viewLifecycleOwner) { idea ->
-            this.idea = idea
-            bind(idea)
+        viewModel.getIdea(ideaId).observe(this.viewLifecycleOwner) { _idea ->
+            lifecycle.coroutineScope.launch {
+                idea = _idea
+                bind(idea)
+                locationName = locationViewModel.getLocationName(idea.locationId)
+            }
         }
     }
 
@@ -73,21 +77,20 @@ class IdeaDetailsFragment : Fragment() {
         return when (item.itemId) {
             R.id.action_share -> {
                 val shareIntent = Intent(Intent.ACTION_SEND)
-                shareIntent.setType("text/plain")
+                shareIntent.setType("text/html")
                 if (navigationArgs.requireLocation) {
-                    lifecycle.coroutineScope.launch {
-                        val locationName = locationViewModel.getLocationName(idea.locationId)
-                        shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text,
-                            idea.name,
-                            locationName,
-                            idea.description)
-                        )
-                    }
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(getString(R.string.share_text,
+                        idea.name,
+                        locationName,
+                        idea.description)
+                    ))
                 }
-                else shareIntent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_text_no_location,
-                    idea.name,
-                    idea.description)
-                )
+                else {
+                    shareIntent.putExtra(Intent.EXTRA_TEXT, Html.fromHtml(getString(R.string.share_text_no_location,
+                        idea.name,
+                        idea.description)
+                    ))
+                }
                 startActivity(Intent.createChooser(shareIntent, "Share using"))
                 return true
             }

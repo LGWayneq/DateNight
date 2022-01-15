@@ -36,14 +36,16 @@
     <string name="idea_name_header">Name</string>
     <string name="idea_distance_header">Distance</string>
     <string name="idea_name_sort_arrow">Idea Name Sort Arrow</string>
-    <string name="idea_location_warning">Please select valid location</string>
+    <string name="idea_location_warning">Location is not valid. Try selecting from pre-existing locations</string>
     <string name="location_question">Does the category require a location</string>
     <string name="locate_button">Locate</string>
     <string name="share">Share</string>
-    <string name="share_text">Name: %1$s\nLocation: %2$s\nDescription: %3$s</string>
-    <string name="share_text_no_location">Name: %1$s\nDescription: %2$s</string>
+    <string name="share_text">Name: %1$s&lt;br /&gt;Location: %2$s&lt;br /&gt;Description: %3$s</string>
+    <string name="share_text_no_location">Name: %1$s&lt;br /&gt;Description: %2$s</string>
     <string name="delete_category">Delete Category</string>
     <string name="edit_category">Edit Category</string>
     <string name="suggest">Suggest</string>
     <string name="idea_list">Idea List</string>
+    <string name="position_stack_url">http://api.positionstack.com/v1/forward?access_key=%1$s&amp;query=%2$s&amp;output=json</string>
+    <string name="position_stack_api_key">0dbb931e01b8528009d24b773743961b</string>
 </resources>

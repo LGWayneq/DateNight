@@ -142,7 +142,7 @@ class AddIdeaFragment : Fragment() {
                 )
                 this.findNavController().navigateUp()
             }
-        }
+        } else binding.progressBar.visibility = View.GONE
     }
 
     private suspend fun updateIdea() {
@@ -168,14 +168,15 @@ class AddIdeaFragment : Fragment() {
                 )
             }
             this.findNavController().navigateUp()
-        }
+        } else binding.progressBar.visibility = View.GONE
     }
 
     private suspend fun isEntryValid(): Boolean {
         if (!navigationArgs.requireLocation) return !(binding.ideaName.text.toString().isBlank() || binding.ideaDescription.text.toString().isBlank())
         else {
             if (binding.ideaLocation.text.toString() !in locations) {
-                val coordinateList = webInterface.getLocationCoordinates(binding.ideaLocation.text.toString())
+                binding.progressBar.visibility = View.VISIBLE
+                val coordinateList = webInterface.getLocationCoordinatesAlternate(binding.ideaLocation.text.toString())
                 latitude = coordinateList[0]
                 longitude = coordinateList[1]
                 if (latitude == null || latitude == 45.0 || longitude == null || longitude == -90.0) {

@@ -10,32 +10,44 @@
     android:paddingRight="@dimen/margin_between_elements"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.65">
 
-    <TextView
-        android:id="@+id/idea_name_text_view"
-        style="@style/Widget.Inventory.ListItemTextView"
-        android:layout_width="250dp"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/margin_idea_details"
-        android:fontFamily="sans-serif-medium"
-        android:textSize="20dp"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="Black Tap" />
+        <TextView
+            android:id="@+id/idea_name_text_view"
+            style="@style/Widget.Inventory.ListItemTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="@dimen/margin_idea_details"
+            android:fontFamily="sans-serif-medium"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="Black Tap" />
+    </RelativeLayout>
 
-    <TextView
-        android:id="@+id/idea_distance_text_view"
-        style="@style/Widget.Inventory.ListItemTextView"
-        android:layout_width="100dp"
-        android:layout_marginStart="@dimen/margin_between_elements"
-        android:fontFamily="sans-serif-medium"
-        android:textAlignment="center"
-        android:textSize="20dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_weight="1"
-        app:layout_constraintStart_toEndOf="@+id/idea_name_text_view"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:text="1.5km" />
+    <RelativeLayout
+        android:layout_width="0dip"
+        android:layout_height="fill_parent"
+        android:layout_weight="0.35">
 
+        <TextView
+            android:id="@+id/idea_distance_text_view"
+            style="@style/Widget.Inventory.ListItemTextView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:fontFamily="sans-serif-medium"
+            android:textAlignment="center"
+            android:textSize="20dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:text="1.5km" />
+    </RelativeLayout>
 </LinearLayout>
