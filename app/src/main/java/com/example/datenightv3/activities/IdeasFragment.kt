@@ -82,10 +82,7 @@ class IdeasFragment: Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        arguments?.let {
-            ideaName = it.getString(IDEA_NAME).toString()
-        }
+        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(
@@ -140,17 +137,6 @@ class IdeasFragment: Fragment() {
 
     private fun bindView() {
         bindList()
-        binding.addIdeaButton.setOnClickListener {
-            lifecycle.coroutineScope.launch {
-                val categoryId = viewModel.getCategoryId(navigationArgs.categoryName)
-                val action = IdeasFragmentDirections.actionIdeasFragmentToAddIdeaFragment(
-                    titleString = "Add New " + navigationArgs.categoryName + " Idea",
-                    categoryId = categoryId,
-                    requireLocation = navigationArgs.requireLocation
-                )
-                findNavController().navigate(action)
-            }
-        }
         binding.ideaNameLayout.setOnClickListener {
             if (currentSort == sortType.NAME_ASCEND) {
                 currentSort = sortType.NAME_DESCEND
@@ -279,6 +265,28 @@ class IdeasFragment: Fragment() {
                     swipeRefreshLayout.setRefreshing(false)
                 }
             }, 700)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.add_button, menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.action_add -> {
+                lifecycle.coroutineScope.launch {
+                    val categoryId = viewModel.getCategoryId(navigationArgs.categoryName)
+                    val action = IdeasFragmentDirections.actionIdeasFragmentToAddIdeaFragment(
+                        titleString = "Add New " + navigationArgs.categoryName + " Idea",
+                        categoryId = categoryId,
+                        requireLocation = navigationArgs.requireLocation
+                    )
+                    findNavController().navigate(action)
+                }
+                return true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
     }
 

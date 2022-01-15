@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@id/idea_name_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_name_label"
-        tools:text="Idea Name" />
+        tools:text="A super long long long long long long long idea name" />
 
     <TextView
         android:id="@+id/idea_location_label"
@@ -51,7 +51,7 @@
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@+id/idea_location_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_location_label"
-        tools:text="Location" />
+        tools:text="A very long long long long long long long location name" />
 
     <View
         android:id="@+id/divider"

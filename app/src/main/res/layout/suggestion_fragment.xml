@@ -28,7 +28,7 @@
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@id/idea_name_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_name_label"
-        tools:text="Idea Name" />
+        tools:text="A super long long long long long long long long Idea Name" />
 
     <TextView
         android:id="@+id/idea_location_label"
@@ -45,13 +45,13 @@
         android:id="@+id/idea_location"
         style="@style/Widget.Inventory.TextView"
         android:textSize="18dp"
-        android:layout_width="wrap_content"
+        android:layout_width="250dp"
         android:layout_marginLeft="@dimen/margin_idea_details_horizontal"
         android:visibility="gone"
         app:layout_constraintStart_toEndOf="@id/idea_name_label"
         app:layout_constraintTop_toTopOf="@+id/idea_location_label"
         app:layout_constraintBottom_toBottomOf="@id/idea_location_label"
-        tools:text="Location" />
+        tools:text="A very long long long long long location name" />
 
     <TextView
         android:id="@+id/idea_description"

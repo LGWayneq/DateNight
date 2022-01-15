@@ -70,7 +70,7 @@ class IdeaDetailsFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_item, menu)
+        inflater.inflate(R.menu.share_button, menu)
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
