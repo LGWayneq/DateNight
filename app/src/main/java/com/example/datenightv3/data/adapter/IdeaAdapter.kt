@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
+import android.widget.RelativeLayout
 import androidx.core.view.size
 import androidx.fragment.app.activityViewModels
 import androidx.recyclerview.widget.DiffUtil
@@ -43,22 +44,23 @@ class IdeaAdapter(private var latitude: Double?,
     }
 
     class IdeaViewHolder(private var binding: IdeaItemBinding): RecyclerView.ViewHolder(binding.root) {
-        var distance : Double = 0.0
+        var distance : Double = -1.0
         fun bind(idea: Idea, latitude: Double?, longitude: Double?, requireLocation: Boolean) {
             binding.ideaNameTextView.text = idea.name
             if (requireLocation) {
                 val ideaLatitude = idea.latitude
                 val ideaLongitude = idea.longitude
                 distance = calcDistance(ideaLatitude, ideaLongitude, latitude, longitude)
-                binding.ideaDistanceTextView.text = String.format("%.1f", distance) + "km"
+                if (distance != -1.0) binding.ideaDistanceTextView.text = String.format("%.1f", distance) + "km"
+                else binding.ideaDistanceTextView.text = "-"
             } else {
-                binding.ideaNameTextView.setLayoutParams(LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
-                    LinearLayout.LayoutParams.WRAP_CONTENT))
+                binding.ideaNameLayout.setLayoutParams(LinearLayout.LayoutParams(LinearLayout.LayoutParams.WRAP_CONTENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT, 1.0f))
             }
         }
 
         private fun calcDistance(lat1: Double?, lon1: Double?, lat2: Double?, lon2: Double?): Double {
-            var d : Double = 0.0
+            var d : Double = -1.0
             if (lon2 != null && lat2 != null && lat1 != null && lon1 != null) {
                 val R = 6371; // Radius of the earth in km
                 val dLat = deg2rad(lat2 - lat1)

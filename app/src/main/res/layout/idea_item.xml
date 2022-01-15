@@ -6,48 +6,46 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="?android:attr/selectableItemBackground"
-    android:paddingLeft="@dimen/margin"
-    android:paddingRight="@dimen/margin_between_elements"
+    android:paddingStart="@dimen/margin"
+    android:paddingEnd="@dimen/margin_between_elements"
     android:paddingTop="8dp"
     android:paddingBottom="8dp">
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/idea_name_layout"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.65">
+        android:layout_weight="0.65"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/idea_name_text_view"
             style="@style/Widget.Inventory.ListItemTextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
-            android:layout_marginBottom="@dimen/margin_idea_details"
             android:fontFamily="sans-serif-medium"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_weight="1"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginVertical="@dimen/margin"
             tools:text="Black Tap" />
-    </RelativeLayout>
+    </LinearLayout>
 
-    <RelativeLayout
+    <LinearLayout
+        android:id="@+id/idea_distance_layout"
         android:layout_width="0dip"
         android:layout_height="fill_parent"
-        android:layout_weight="0.35">
+        android:layout_weight="0.35"
+        android:orientation="vertical">
 
         <TextView
             android:id="@+id/idea_distance_text_view"
             style="@style/Widget.Inventory.ListItemTextView"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:layout_centerInParent="true"
             android:fontFamily="sans-serif-medium"
             android:textAlignment="center"
             android:textSize="20dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginVertical="@dimen/margin"
             tools:text="1.5km" />
-    </RelativeLayout>
+    </LinearLayout>
 </LinearLayout>
