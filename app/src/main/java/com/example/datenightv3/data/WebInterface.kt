@@ -64,9 +64,17 @@ class WebInterface {
 
             val typeToken = object : TypeToken<JsonFile>() {}.type
             var jsonFile: JsonFile = Gson().fromJson(jsonString, typeToken)
-
+            Log.d("test", url)
+            Log.d("test", jsonFile.toString())
             for (entry in jsonFile.data) {
                 if (entry.postal_code == postalCode) {
+                    coordinateList[0] = entry.latitude
+                    coordinateList[1] = entry.longitude
+                    break
+                }
+            }
+            for (entry in jsonFile.data) { //temporary fix to bypass no postal code issue
+                if (entry.confidence == 1.0) {
                     coordinateList[0] = entry.latitude
                     coordinateList[1] = entry.longitude
                     break
