@@ -33,7 +33,7 @@ interface IdeaDao {
     @Query("SELECT EXISTS(SELECT * FROM ideas WHERE category_id = :categoryId)")
     fun doesIdeaWithCategoryExist(categoryId: Int): Boolean
 
-    @Query("SELECT * FROM ideas WHERE name LIKE :query AND category_id = :categoryId ORDER BY name ASC")
+    @Query("SELECT * FROM ideas WHERE (name LIKE :query OR description LIKE :query)  AND category_id = :categoryId ORDER BY name ASC")
     fun searchIdea(query: String?, categoryId: Int): Flow<List<Idea>>
 
     @Query("SELECT COUNT(*) FROM ideas WHERE category_id = :categoryId")
