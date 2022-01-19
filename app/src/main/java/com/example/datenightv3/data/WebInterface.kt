@@ -56,28 +56,22 @@ class WebInterface {
         val noPostCodeLocationName = locationName.replaceAfter(',', "").replace(" ", "%20")
         val postalCode = locationName.substring(locationName.length-6, locationName.length)
         val apiKey = "0dbb931e01b8528009d24b773743961b"
-        val url = "http://api.positionstack.com/v1/forward?access_key="+ apiKey +"&query=" + noPostCodeLocationName + "&output=json"
+        var urlList: MutableList<String> = mutableListOf("","")
+        urlList[0] = "http://api.positionstack.com/v1/forward?access_key="+ apiKey +"&query=" + locationName + "&output=json"
+        urlList[1] = "http://api.positionstack.com/v1/forward?access_key="+ apiKey +"&query=" + noPostCodeLocationName + "&output=json"
         try {
-            val jsonString = withContext(Dispatchers.IO) {
-                URL(url).readText()
-            }
-
-            val typeToken = object : TypeToken<JsonFile>() {}.type
-            var jsonFile: JsonFile = Gson().fromJson(jsonString, typeToken)
-            Log.d("test", url)
-            Log.d("test", jsonFile.toString())
-            for (entry in jsonFile.data) {
-                if (entry.postal_code == postalCode) {
-                    coordinateList[0] = entry.latitude
-                    coordinateList[1] = entry.longitude
-                    break
-                }
-            }
-            for (entry in jsonFile.data) { //temporary fix to bypass no postal code issue
-                if (entry.confidence == 1.0) {
-                    coordinateList[0] = entry.latitude
-                    coordinateList[1] = entry.longitude
-                    break
+            for (url in urlList) {
+                val jsonString = withContext(Dispatchers.IO) { URL(url).readText() }
+                val typeToken = object : TypeToken<JsonFile>() {}.type
+                var jsonFile: JsonFile = Gson().fromJson(jsonString, typeToken)
+                Log.d("test", url)
+                Log.d("test", jsonFile.toString())
+                for (entry in jsonFile.data) {
+                    if (entry.postal_code == postalCode || entry.confidence == 1.0) { //temporary fix to bypass no postal code issue
+                        coordinateList[0] = entry.latitude
+                        coordinateList[1] = entry.longitude
+                        return coordinateList
+                    }
                 }
             }
         } catch (e: Exception) {}
