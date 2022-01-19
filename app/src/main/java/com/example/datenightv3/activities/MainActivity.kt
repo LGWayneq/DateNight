@@ -17,16 +17,15 @@ package com.example.datenightv3.activities
 
 import android.Manifest
 import android.app.SearchManager
+import android.content.Context
 import android.content.Intent
 import android.graphics.Color
+import android.graphics.Rect
 import android.graphics.drawable.ColorDrawable
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.os.Handler
-import android.view.Menu
-import android.view.MenuInflater
-import android.view.MenuItem
-import android.view.Window
+import android.view.*
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.NavController
@@ -37,6 +36,12 @@ import com.example.datenightv3.R
 import com.example.datenightv3.databinding.ActivityMainBinding
 import com.google.android.gms.location.FusedLocationProviderClient
 import com.google.android.gms.location.LocationServices
+import android.widget.EditText
+
+import android.view.MotionEvent
+import android.view.inputmethod.InputMethodManager
+import android.widget.SearchView
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -80,6 +85,23 @@ class MainActivity : AppCompatActivity() {
         locationPermissionRequest.launch(arrayOf(
             Manifest.permission.ACCESS_FINE_LOCATION,
             Manifest.permission.ACCESS_COARSE_LOCATION))
+    }
+
+    override fun dispatchTouchEvent(event: MotionEvent?): Boolean {
+        if (event!!.action === MotionEvent.ACTION_DOWN) {
+            val v = currentFocus
+            if (v is EditText || v is SearchView) {
+                val outRect = Rect()
+                v.getGlobalVisibleRect(outRect)
+                if (!outRect.contains(event!!.rawX.toInt(), event!!.rawY.toInt())) {
+                    v.clearFocus()
+                    val imm: InputMethodManager =
+                        getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+                    imm.hideSoftInputFromWindow(v.getWindowToken(), 0)
+                }
+            }
+        }
+        return super.dispatchTouchEvent(event)
     }
 
 }

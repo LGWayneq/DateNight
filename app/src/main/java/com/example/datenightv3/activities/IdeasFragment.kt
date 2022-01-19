@@ -203,13 +203,8 @@ class IdeasFragment: Fragment() {
                         ideaAdapter.submitList(it)
                     }
                 }
+                binding.ideaSearchView.clearFocus()
                 return true
-            }
-        })
-        //enable click anywhere on search bar
-        binding.ideaSearchView.setOnClickListener(object: View.OnClickListener {
-            override fun onClick(v: View?) {
-                binding.ideaSearchView.setIconified(false)
             }
         })
     }
